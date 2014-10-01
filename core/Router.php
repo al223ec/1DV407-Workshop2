@@ -60,7 +60,7 @@ class Router{
 	public static function initRoutes(){
 		self::$route = array(
 			"member" => array(
-				"login" =>  \config\Config::AppRoot . "member/", 
+				"view" =>  \config\Config::AppRoot . "member/view", 
 				),
 			); 
 	}

@@ -2,19 +2,21 @@
 
 namespace model; 
 
+require_once("./src/model/repository/member_repository.php");
+
 class MemberModel {
 	
 	private $memberRepository; 
 
 	public function __construct(){
-		$this->memberRepository = new MemberRepository(); 
+		$this->memberRepository = new repository\MemberRepository(); 
 	}
 
-	public function getListOfMembers(){
-
+	public function getArrayOfMembers(){
+		return $this->memberRepository->getArrayOfMembers(); 
 	}
 
-	public function getCompactListOfMembers(){
+	public function getCompactArrayOfMembers(){
 
 	}
 

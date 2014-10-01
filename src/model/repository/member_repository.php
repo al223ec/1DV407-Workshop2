@@ -3,14 +3,24 @@
 namespace model\repository; 
 
 require_once('./src/model/member.php'); 
+require_once('./src/model/boat.php'); 
+require_once('./src/model/repository/repository.php'); 
 
-class MemeberRepository extends Repository {
+class MemberRepository extends Repository {
 
-	public function getListOfMembers(){
 
+	public function getArrayOfMembers(){
+	 	$boats =  array(
+	 		new \model\Boat("Segelbåt", 1),
+	 		new \model\Boat("Motorbåt", 1),
+	 		); 
+
+		return array(
+			new \model\Member(1, "Anton", $boats), 
+			); 
 	}
 
-	public function getCompactListOfMembers(){
+	public function getCompactArrayOfMembers(){
 
 	}
 }
