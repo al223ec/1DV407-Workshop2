@@ -2,7 +2,7 @@
 
 abstract class Configs{
 	
-	const DefaultController = "Auth";
+	const DefaultController = "Member";
 	const DefaultAction = "main"; 
 	const AllowedUrlChars = "/[^A-z0-9\/\^]/"; 
 	const Debug = true;

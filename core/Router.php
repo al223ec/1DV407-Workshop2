@@ -1,5 +1,7 @@
 <?php 
 
+namespace core; 
+
 require_once("./core/config/Configs.php"); 
 require_once("./src/config/Config.php");
 
@@ -16,19 +18,19 @@ class Router{
 
 		$route = isset($_GET['url']) ? $_GET['url'] : '';
 
-		$route = preg_replace(Configs::AllowedUrlChars, '', $route);
+		$route = preg_replace(\Configs::AllowedUrlChars, '', $route);
 		$routeParts = explode('/', $route);
 		//Se till att inte otillåtna tecken skickas med i urlen
 
 		$this->controller = $routeParts[0];
-		$this->action = isset($routeParts[1]) ? $routeParts[1] : Configs::DefaultAction;
+		$this->action = isset($routeParts[1]) ? $routeParts[1] : \Configs::DefaultAction;
 
 		//Remove the first element from an array
 		array_shift($routeParts);
 		array_shift($routeParts);
 		
 		if($this->controller === ""){
-			$this->controller = Configs::DefaultController; 
+			$this->controller = \Configs::DefaultController; 
 		}
 		$this->params = $routeParts; 
 		isset($_GET['url']) ? $_GET['url'] = "" : ""; 
@@ -36,7 +38,7 @@ class Router{
 
 	public function getAction(){
 		if (empty($this->action)){ 
-			$this->action = Configs::DefaultAction;
+			$this->action = \Configs::DefaultAction;
 		}    
 		return $this->action;
 	}  
@@ -46,7 +48,7 @@ class Router{
 		$this->controller = ucfirst($this->controller); 
 
 		if (empty($this->controller)){ 
-			$this->controller = Configs::DefaultController;
+			$this->controller = \Configs::DefaultController;
 		}  
 	    return $this->controller . "Controller";
 	} 
@@ -58,14 +60,9 @@ class Router{
 
 	public static function initRoutes(){
 		self::$route = array(
-			"Auth" => array(
-				"login" =>  \config\Config::AppRoot . "Auth/login", 
-				"logout" => \config\Config::AppRoot . "Auth/Logout"
+			"Member" => array(
+				"login" =>  \config\Config::AppRoot . "Member/", 
 				),
-			"Registeruser" => array(
-				"registerUser" => \config\Config::AppRoot . "Registeruser/",
-				"saveNewUser" => \config\Config::AppRoot .  "Registeruser/SaveNewUser" 
-				)
 			); 
 	} 
 }

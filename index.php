@@ -6,6 +6,6 @@ require_once("core/Router.php");
 
 session_start();
 
-$router = new Router();  
+$router = new \core\Router();  
 $view = new  HTMLView();
-$view->echoHTML(Main::dispatch($router));
+$view->echoHTML(\core\Main::dispatch($router));

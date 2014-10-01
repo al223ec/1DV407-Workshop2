@@ -1,16 +1,21 @@
 <?php
 
+namespace core; 
+
 class Main {
 	
 	public static function dispatch($router){
+
 		$controller = $router->getController();
 		$action = $router->getAction();
 		$params = $router->getParams();
-		$controllerfile = "src/controller/{$controller}.php";
+
+		$controllerfile = "./src/controller/{$controller}.php";
+		$controller = "\\controller\\" . $controller; 
 
 		if (file_exists($controllerfile)){
 			require_once($controllerfile);
-			$app = new $controller();
+			$app =  new $controller();
 			$app->setParams($params);
 
 			if(!method_exists($app, $action)){
