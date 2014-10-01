@@ -9,13 +9,15 @@ abstract class Repository{
 	protected static $TBL_NAME = "member"; 
 	protected static $CONNECTIONSTRING = "mysql:host=127.0.0.1;dbname=workshopdb";
 
-	protected $pdo; 
-	public function __construct(){
-		$this->pdo = self::connect(); 
-	}
+	private $dbConnection; 
 
-	protected static function connect(){
-		return new \PDO(self::$CONNECTIONSTRING, self::$DB_USERNAME, self::$DB_PASSWORD);
+	protected function connection(){
+		if($this->dbConnection == null){
+			$this->dbConnection =  new \PDO(self::$CONNECTIONSTRING, self::$DB_USERNAME, self::$DB_PASSWORD);
+			$this->dbConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		} 
+		return $this->dbConnection; 
+
 	} 
 	/**
 	*stulen metod från Emil, inte testat eller använd än, 

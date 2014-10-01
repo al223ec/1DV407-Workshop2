@@ -8,8 +8,9 @@ class Boat{
 	private $type; 
 	private $length; 
 
-	public function __construct($type, $memberId, $id = 0){
+	public function __construct($type, $memberId, $length, $id = 0){
 		$this->type = $type; 
+		$this->length = $length; 
 	}
 
 	public function __toString(){

@@ -4,6 +4,9 @@ namespace controller;
 
 require_once("src/controller/controller.php"); 
 require_once("src/view/member_view.php"); 
+ 
+require_once("src/view/member/member_list_view.php"); 
+require_once("src/view/member/member_form_view.php"); 
 require_once("src/model/member_model.php"); 
 
 class MemberController extends Controller {
@@ -17,23 +20,20 @@ class MemberController extends Controller {
 	}
 
 	public function main(){
+		$listView = new \view\member\MemberListView($this->memberModel); 
+		
 		if($this->memberView->shouldDispalyFullList()){
-			//return fulla listan
-			return $this->memberView->fullList();
+			return $listView->fullList();
 		}
-
-		return $this->memberView->compactList(); 
-
-		//return "<a href='" . \core\router::$route["member"]["view"]  . "'> alla medlemmar</a>"; 
+		return $listView->compactList(); 
 	}
 
 	public function add(){
-
-		return $this->memberView->add(); 
+		$formView = new \view\member\MemberFormView($this->memberModel); 
+		return $formView->add(); 
 	}	
 
 	public function create(){
-
 		return "create"; 
 	}
 
@@ -47,8 +47,9 @@ class MemberController extends Controller {
 	}
 
 	public function save(){
-		$un = $this->memberView->getUserName(); 
-		$ssn = $this->memberView->getSsnPost();
+		$formView = new \view\member\MemberFormView($this->memberModel); 
+		$un = $formView->getUserName(); 
+		$ssn = $formView->getSsnPost();
 
 		//Spara sen redirect
 		return "Du har tryckt på sparat, $un, $ssn"; 

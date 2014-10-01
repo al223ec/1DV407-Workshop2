@@ -8,7 +8,7 @@ class Member{
 	private $name; 
 	private $boats; 
 
-	public function __construct($id, $name, array $boats = array()){
+	public function __construct($id, $name, array $boats){
 		$this->id = $id; 
 		$this->name = $name; 
 		$this->boats = $boats; 
