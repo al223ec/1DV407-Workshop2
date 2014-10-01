@@ -1,8 +1,10 @@
 <?php 
 
-require_once("config/Configs.php"); 
+require_once("./core/config/Configs.php"); 
+require_once("./src/config/Config.php");
 
 class Router{
+
 	public static $route;
 
 	private $controller;
@@ -13,6 +15,8 @@ class Router{
 		self::initRoutes(); 
 
 		$route = isset($_GET['url']) ? $_GET['url'] : '';
+
+		$route = preg_replace(Configs::AllowedUrlChars, '', $route);
 		$routeParts = explode('/', $route);
 		//Se till att inte otillåtna tecken skickas med i urlen
 
@@ -44,7 +48,7 @@ class Router{
 		if (empty($this->controller)){ 
 			$this->controller = Configs::DefaultController;
 		}  
-	    return $this->controller;
+	    return $this->controller . "Controller";
 	} 
 	
 	public function getParams(){

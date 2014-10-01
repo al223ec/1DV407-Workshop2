@@ -13,15 +13,12 @@ class HTMLView{
 				<meta charset='UTF-8'>
 				<link href='/lab4/css/bootstrap.min.css' rel='stylesheet'>
 				<link href='/lab4/css/style.css' rel='stylesheet'>
-				<title> Lab 4 - Anton Ledström </title>
+				<title> Workshop 2 - Design </title>
 			</head>
 			<body>
 				<div class='wrapper'>
-					<h1>Laboration 4 - Registrera nya användare - al223bn/al223ec</h1>
+					<h1>Workshop 2 - Design</h1>
 					$body
-					<p>
-						" . \Helpers::getDateTime() . "
-					</p>
 				</div>
 			</body>
 			</html>";
