@@ -47,8 +47,11 @@ class MemberController extends Controller {
 	}
 
 	public function save(){
+		$un = $this->memberView->getUserName(); 
+		$ssn = $this->memberView->getSsnPost();
+
 		//Spara sen redirect
-		return "Du har tryckt på sparat"; 
+		return "Du har tryckt på sparat, $un, $ssn"; 
 
 	}
 

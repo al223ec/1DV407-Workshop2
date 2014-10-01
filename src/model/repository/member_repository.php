@@ -7,28 +7,34 @@ require_once('./src/model/boat.php');
 require_once('./src/model/repository/repository.php'); 
 
 class MemberRepository extends Repository {
-	private $memberArr; 
-
-	public function __construct(){
-		$boats =  array(
- 			new \model\Boat("Segelbåt", 666),
- 			new \model\Boat("Motorbåt", 666),
- 		); 
-
- 	 	$moreboats =  array(
- 			new \model\Boat("Segelbåt", 2),
- 			new \model\Boat("Yatchy", 2),
- 		); 
-	
-		$this->memberArr = 	 array(
-			new \model\Member("Anton", $boats, 666), 
-			new \model\Member("Erik", $moreboats, 2),
-		); 
-	} 
-
 
 	public function getArrayOfMembers(){
-	 	return $this->memberArr; 
+		$ret = array(); 
+		$sql = "SELECT * FROM " . self::$TBL_NAME;  
+		
+		$sth = $this->pdo->prepare($sql); 
+		
+		if(!$sth){
+			throw new \Exception("SQL Error"); 
+		} 
+
+		if(!$sth->execute()){
+			throw new \Exception("SQL Execute Error"); 
+		} 
+		if($response = $sth->fetchAll()){
+
+			foreach ($response as $memberdbo) {
+				$ret[] = new \model\Member($memberdbo["id"], $memberdbo["name"]); 
+
+			}
+
+		} 
+		return $ret; 
+	}
+
+	private function getBoatByMemberId($memberId){
+
+
 	}
 
 	public function getCompactArrayOfMembers(){
@@ -36,11 +42,16 @@ class MemberRepository extends Repository {
 	}
 
 	public function getMemberById($id){
+		/*
 		foreach ($this->memberArr as $member) {
 			if($member->getId() === $id){
 				return $member; 
 			}
-		}
+			}*/
 		return null; 
+	}
+
+	public function deleteMemeber($id){
+
 	}
 }

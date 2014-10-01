@@ -11,8 +11,12 @@ require_once("./src/model/member_model.php");
 require_once("./src/view/view.php");
 
 class MemberView extends View{
-    private $memberModel; 
 
+    private $userNamePost = "MemberView::UserNamePost"; 
+    private $ssnPost = "MemberView::ssnPost"; 
+
+
+    private $memberModel;
     public function shouldDispalyFullList(){
         return false; 
     }
@@ -49,11 +53,8 @@ class MemberView extends View{
                 <a href='" . \core\router::$route["member"]["edit"]  . $member->getId() ."'> Edit</a>  | 
                 <a href='" . \core\router::$route["member"]["delete"]  . $member->getId() ."'> delete</a>  |
             </li>";
-            $ret .="<ul>";
-            foreach ($member->getBoats() as $boat) {
-                $ret .= "<li>" . $boat. "</li>";
-            }
-            $ret .= "</ul>";
+
+            $ret .= $this->getBoatList($member->getBoats()); 
         }
         $ret .= "</ul>";
 
@@ -69,15 +70,24 @@ class MemberView extends View{
                 <fieldset>
                     <legend>Add member</legend>
                         <label for=UserName>Name:</label>
-                            <input type=text size=20 name=userName id=userNameID value=>
+                            <input type=text size=20 name=" . $this->userNamePost . " id=userNameID value=>
                         <label for=SSN>SSN:</label>
-                            <input type=text size=20  name=SSN id=SSNID value=>
+                            <input type=text size=20 name=" . $this->ssnPost . " id=SSNID value=>
                 </fieldset>
 
                 <input type='submit' name='save' value='Spara'>
             </form>
         ";
     }
+
+    public function getUserName(){
+        return $this->getCleanInput($this->userNamePost); 
+    }
+
+    public function getSsnPost(){
+        return $this->getCleanInput($this->ssnPost); 
+    }
+
 
     public function edit($member){
         return $ret = "
@@ -93,21 +103,23 @@ class MemberView extends View{
         ";
     }
 
-    public function view($member){
-        return "$member"; 
-        return $ret = "
-            <form method=post enctype=multipart/form-data action=?view>
-                <fieldset>
-                    <legend>View member</legend>
-                        <p>ID: </p>
-                        <p>SSN: </p>
-                        <p>Name: </p>
-                        <p>Boats: </p>
-                </fieldset>
-            </form>
-        ";
-    }
 
+
+    public function view($member){
+        $ret = " <h1> Medlem " . $member . "</h1>
+            <p> ". $member->getSsn() ."</p>"; 
+        $ret .= $this->getBoatList($member->getBoats()); 
+        return $ret; 
+    }
+    private function getBoatList($boats){
+        $ret = "<ul>";
+
+        foreach ($boats as $boat) {
+            $ret .= "<li>" . $boat. "</li>";
+        }
+        $ret .= "</ul>";
+        return $ret; 
+    }
     private function listFooter(){
         return "<a href='" . \core\router::$route["member"]["add"] . "'> Lägg till</a>";
     }

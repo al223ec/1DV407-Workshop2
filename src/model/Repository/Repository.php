@@ -6,8 +6,8 @@ abstract class Repository{
 			/* local /*/ 
 	protected static $DB_PASSWORD = ""; 
 	protected static $DB_USERNAME = "root"; 
-	protected static $TBL_NAME = "users"; 
-	protected static $CONNECTIONSTRING = "mysql:host=127.0.0.1;dbname=lab4db";
+	protected static $TBL_NAME = "member"; 
+	protected static $CONNECTIONSTRING = "mysql:host=127.0.0.1;dbname=workshopdb";
 
 	protected $pdo; 
 	public function __construct(){

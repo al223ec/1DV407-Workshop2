@@ -4,11 +4,11 @@ namespace model;
 
 class Member{
 	private $id; 
-	private $ssn; 
+	private $ssn = 123124241; 
 	private $name; 
 	private $boats; 
 
-	public function __construct($name, array $boats, $id = 0){
+	public function __construct($id, $name, array $boats = array()){
 		$this->id = $id; 
 		$this->name = $name; 
 		$this->boats = $boats; 
@@ -36,5 +36,7 @@ class Member{
 		$this->name = $name; 
 	}
 
-
+	public function getSsn(){
+		return $this->ssn;
+	}
 }
