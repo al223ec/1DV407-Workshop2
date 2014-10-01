@@ -20,4 +20,12 @@ class MemberModel {
 
 	}
 
+	public function getMemberById($id){
+		return $this->memberRepository->getMemberById($id); 
+	}
+
+	public function saveMember($name, $ssn){
+		
+	}
+
 }

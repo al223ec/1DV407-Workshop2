@@ -60,7 +60,11 @@ class Router{
 	public static function initRoutes(){
 		self::$route = array(
 			"member" => array(
-				"view" =>  \config\Config::AppRoot . "member/view", 
+				"view" =>  \config\Config::AppRoot . "member/view/", 
+				"edit" =>  \config\Config::AppRoot . "member/edit/",
+				"delete" =>  \config\Config::AppRoot . "member/delete/",
+				"save" =>  \config\Config::AppRoot . "member/save/",
+				"add" =>  \config\Config::AppRoot . "member/add/",
 				),
 			); 
 	}

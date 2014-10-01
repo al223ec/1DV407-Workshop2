@@ -6,53 +6,54 @@ require_once("src/controller/controller.php");
 require_once("src/view/member_view.php"); 
 require_once("src/model/member_model.php"); 
 
-class MemberController extends Controller{
-	private $memberModel; 
+class MemberController extends Controller {
 
-	private $view; 
+	private $memberModel; 
+	private $memberView; 
 
 	public function __construct(){
-		$this->view;
 		$this->memberModel = new \model\MemberModel(); 
-
+		$this->memberView = new \view\MemberView($this->memberModel); 
 	}
 
 	public function main(){
-		return "<a href='" . \core\router::$route["member"]["view"]  . "'> alla medlemmar</a>"; 
+		if($this->memberView->shouldDispalyFullList()){
+			//return fulla listan
+			return $this->memberView->fullList();
+		}
+
+		return $this->memberView->compactList(); 
+
+		//return "<a href='" . \core\router::$route["member"]["view"]  . "'> alla medlemmar</a>"; 
 	}
 
 	public function add(){
-		$ret = ""; 
-		foreach ($this->params  as $key => $value) {
-			$ret .= $value; 
-		}
-		return "add" . $ret; 
+
+		return $this->memberView->add(); 
 	}	
 
 	public function create(){
+
 		return "create"; 
 	}
 
 	public function delete(){
-
+		return "delete"; 
 	}
 
 	public function edit(){
-		//Samma som create?? 
+		//Samma som create??
+		return "edit";  
 	}
 
 	public function save(){
+		//Spara sen redirect
+		return "Du har tryckt på sparat"; 
 
 	}
 
 	public function view(){
-
-		$ret = ""; 
-		$members = $this->memberModel->getArrayOfMembers(); 
-		foreach ($members as $key => $value) {
-			$ret .= $value . "\n"; 
-			$ret .= "\t" . $value->getBoatString();
-		}
-		return $ret; 
+		$member = $this->memberModel->getMemberById(intval($this->params[0])); 
+		return $this->memberView->view($member);
 	}
 }

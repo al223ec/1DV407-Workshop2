@@ -5,48 +5,76 @@
  * Date: 01/10/14
  * Time: 10:52
  */
+namespace view; 
+
 require_once("./src/model/member_model.php");
+require_once("./src/view/view.php");
 
-class MemberView{
+class MemberView extends View{
+    private $memberModel; 
 
-    public function __construct() {
-        $this->member_model = new memberModel();
+    public function shouldDispalyFullList(){
+        return false; 
+    }
+    public function __construct($memberModel) {
+        $this->memberModel = $memberModel; 
     }
 
-    public function compactList($member_list){
-        return $ret = "
-            <form method=post enctype=multipart/form-data action=CompactList>
-                <fieldset>
-                    <legend>Present Compact list</legend>
-                     <!--<a> for every memeber in list -->
-                        <a>$member_list</a>
-                </fieldset>
-            </form>
-        ";
+    public function compactList(){
+        $ret = "<ul>"; 
+        $members = $this->memberModel->getArrayOfMembers(); 
+
+        foreach ($members as $member) {
+            $ret .= "<li>" . $member . " Antal båtar: " . $member->getNumberOfBoats() .
+                "<a href='" . \core\router::$route["member"]["view"]  . $member->getId() ."'> Visa</a> | 
+                <a href='" . \core\router::$route["member"]["edit"]  . $member->getId() ."'> Edit</a>  | 
+                <a href='" . \core\router::$route["member"]["delete"]  . $member->getId() ."'> delete</a>  |
+            </li>";
+            
+        }
+        $ret .= "</ul>";
+
+        return $ret . $this->listFooter();
     }
 
-    public function fullList($member_list){
-        return $ret = "
-            <form method=post enctype=multipart/form-data action=FullList>
-                <fieldset>
-                    <legend>Present full list</legend>
-                    <!--<a> for every memeber in list -->
-                         <a>$member_list</a>
-                </fieldset>
-            </form>
-        ";
+
+    public function fullList(){
+
+        $ret = "<ul>"; 
+        $members = $this->memberModel->getArrayOfMembers(); 
+        
+        foreach ($members as $member) {
+            $ret .= "<li>" . $member . 
+                "<a href='" . \core\router::$route["member"]["view"]  . $member->getId() ."'> Visa</a> | 
+                <a href='" . \core\router::$route["member"]["edit"]  . $member->getId() ."'> Edit</a>  | 
+                <a href='" . \core\router::$route["member"]["delete"]  . $member->getId() ."'> delete</a>  |
+            </li>";
+            $ret .="<ul>";
+            foreach ($member->getBoats() as $boat) {
+                $ret .= "<li>" . $boat. "</li>";
+            }
+            $ret .= "</ul>";
+        }
+        $ret .= "</ul>";
+
+        return $ret . $this->listFooter();
     }
 
-    public function add($member){
+    public function add($member = null){
+        if($member !== null){
+            //JAg editerar en member
+        }
         return $ret = "
-            <form method=post enctype=multipart/form-data action=Add>
+            <form method=post enctype=multipart/form-data action=".\core\router::$route["member"]["save"] .  ">
                 <fieldset>
                     <legend>Add member</legend>
-                        <label for=UserName>Name: :</label>
+                        <label for=UserName>Name:</label>
                             <input type=text size=20 name=userName id=userNameID value=>
-                        <label for=SSN>SSN:  :</label>
+                        <label for=SSN>SSN:</label>
                             <input type=text size=20  name=SSN id=SSNID value=>
                 </fieldset>
+
+                <input type='submit' name='save' value='Spara'>
             </form>
         ";
     }
@@ -66,6 +94,7 @@ class MemberView{
     }
 
     public function view($member){
+        return "$member"; 
         return $ret = "
             <form method=post enctype=multipart/form-data action=?view>
                 <fieldset>
@@ -77,5 +106,9 @@ class MemberView{
                 </fieldset>
             </form>
         ";
+    }
+
+    private function listFooter(){
+        return "<a href='" . \core\router::$route["member"]["add"] . "'> Lägg till</a>";
     }
 }
