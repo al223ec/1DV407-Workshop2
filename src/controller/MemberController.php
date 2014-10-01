@@ -27,6 +27,10 @@ class MemberController extends Controller{
 	}
 
 	public function save(){
+
+	}
+
+	public function view(){
 		
 	}
 }
