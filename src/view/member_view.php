@@ -5,7 +5,8 @@
  * Date: 01/10/14
  * Time: 10:52
  */
-require_once("./model/memberModel.php");
+require_once("./src/model/member_model.php");
+
 class MemberView{
 
     public function __construct() {

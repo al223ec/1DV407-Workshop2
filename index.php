@@ -1,8 +1,7 @@
 <?php
 
-require_once("common/HTMLView.php");
-require_once("core/Main.php"); 
-require_once("core/Router.php"); 
+require_once("common/html_view.php");
+require_once("core/router.php"); 
 
 session_start();
 

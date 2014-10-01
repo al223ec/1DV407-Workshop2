@@ -2,8 +2,8 @@
 
 namespace core; 
 
-require_once("./core/config/Configs.php"); 
-require_once("./src/config/Config.php");
+require_once("./core/config/configs.php"); 
+require_once("./src/config/config.php");
 
 class Router{
 
@@ -44,13 +44,12 @@ class Router{
 	}  
 	public function getController(){
 		//Ser till att controller alltid stavas med först bokstaven kapital
-		$this->controller = strtolower($this->controller); 
-		$this->controller = ucfirst($this->controller); 
+		$this->controller = strtolower($this->controller);
 
 		if (empty($this->controller)){ 
 			$this->controller = \Configs::DefaultController;
 		}  
-	    return $this->controller . "Controller";
+	    return $this->controller;
 	} 
 	
 	public function getParams(){
@@ -60,8 +59,8 @@ class Router{
 
 	public static function initRoutes(){
 		self::$route = array(
-			"Member" => array(
-				"login" =>  \config\Config::AppRoot . "Member/", 
+			"member" => array(
+				"login" =>  \config\Config::AppRoot . "member/", 
 				),
 			); 
 	}
@@ -72,8 +71,8 @@ class Router{
 		$action = $this->getAction();
 		$params = $this->getParams();
 
-		$controllerfile = "./src/controller/{$controller}.php";
-		$controller = "\\controller\\" . $controller; 
+		$controllerfile = "./src/controller/" . $controller . "_controller.php";
+		$controller = "\\controller\\" . ucfirst($controller) . "Controller"; 
 
 		if (file_exists($controllerfile)){
 			require_once($controllerfile);
@@ -81,11 +80,11 @@ class Router{
 			$app->setParams($params);
 
 			if(!method_exists($app, $action)){
-				throw new Exception("Controller $controller doesn't have $action funktion");  
+				throw new \Exception("Controller $controller doesn't have $action funktion");  
 			}
 			return $app->$action();
 		} else {
-			throw new Exception("Controller $controller not found");  
+			throw new \Exception("Controller $controller not found");  
 		}
 	} 
 }
