@@ -26,5 +26,7 @@ class MemberController extends Controller{
 		//Samma som create?? 
 	}
 
-	public function 
+	public function save(){
+		
+	}
 }

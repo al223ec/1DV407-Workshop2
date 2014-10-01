@@ -64,5 +64,28 @@ class Router{
 				"login" =>  \config\Config::AppRoot . "Member/", 
 				),
 			); 
+	}
+
+
+	public function dispatch(){
+		$controller = $this->getController();
+		$action = $this->getAction();
+		$params = $this->getParams();
+
+		$controllerfile = "./src/controller/{$controller}.php";
+		$controller = "\\controller\\" . $controller; 
+
+		if (file_exists($controllerfile)){
+			require_once($controllerfile);
+			$app =  new $controller();
+			$app->setParams($params);
+
+			if(!method_exists($app, $action)){
+				throw new Exception("Controller $controller doesn't have $action funktion");  
+			}
+			return $app->$action();
+		} else {
+			throw new Exception("Controller $controller not found");  
+		}
 	} 
 }

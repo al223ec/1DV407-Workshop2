@@ -8,4 +8,4 @@ session_start();
 
 $router = new \core\Router();  
 $view = new  HTMLView();
-$view->echoHTML(\core\Main::dispatch($router));
+$view->echoHTML($router->dispatch());
