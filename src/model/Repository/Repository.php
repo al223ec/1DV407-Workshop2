@@ -6,43 +6,38 @@ abstract class Repository{
 			/* local /*/ 
 	protected static $DB_PASSWORD = ""; 
 	protected static $DB_USERNAME = "root"; 
-	protected static $TBL_NAME = "member"; 
+	protected $TBL_NAME = "member"; 
 	protected static $CONNECTIONSTRING = "mysql:host=127.0.0.1;dbname=workshopdb";
 
 	private $dbConnection; 
-
+	/**
+	* @return PDO object, 
+	*/
 	protected function connection(){
 		if($this->dbConnection == null){
-			$this->dbConnection =  new \PDO(self::$CONNECTIONSTRING, self::$DB_USERNAME, self::$DB_PASSWORD);
+			$this->dbConnection = new \PDO(self::$CONNECTIONSTRING, self::$DB_USERNAME, self::$DB_PASSWORD);
 			$this->dbConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		} 
 		return $this->dbConnection; 
 
 	} 
-	/**
-	*stulen metod från Emil, inte testat eller använd än, 
-	*/
-	public function query($sql, $params = NULL) {
+	protected function query($sql, $params = null){
+		$db = $this->connection();
+		$query = $db->prepare($sql); 
 
-		$db = $this -> connection();
-
-		$query = $db -> prepare($sql);
-		$result;
-		if ($params != NULL) {
+		if ($params !== null) {
 			if (!is_array($params)) {
 				$params = array($params);
 			}
-
-			$result = $query -> execute($params);
+			$query->execute($params);
 		} else {
-			$result = $query -> execute();
+			$query->execute(); 
 		}
 
-		if ($result) {
-			return $result -> fetchAll();
-		}
-
-		return NULL;
-
+		if($response = $query->fetchAll()){
+			return $response; 
+		} 
+		return null;
 	}
+
 }

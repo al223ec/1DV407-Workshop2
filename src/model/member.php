@@ -8,10 +8,11 @@ class Member{
 	private $name; 
 	private $boats; 
 
-	public function __construct($id, $name, array $boats){
+	public function __construct($id, $name, $ssn, array $boats){
 		$this->id = $id; 
 		$this->name = $name; 
 		$this->boats = $boats; 
+		$this->ssn = $ssn; 
 	}
 
 	public function getBoats(){
@@ -20,7 +21,7 @@ class Member{
 	}
 
 	public function __toString(){
-		return $this->name; 
+		return $this->name . " ssn: ". $this->ssn; 
 
 	}
 

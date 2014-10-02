@@ -14,17 +14,11 @@ class MemberView extends View{
     
     private $memberModel;
     
-    public function shouldDispalyFullList(){
-        return true; 
-    }
-
-    public function __construct($memberModel) {
-        $this->memberModel = $memberModel; 
-    }
     public function view($member){
-        $ret = " <h1> Medlem " . $member . "</h1>
+        $ret = " <h1> Medlem </h1><h2>" . $member . "</h2>
             <p> ". $member->getSsn() ."</p>"; 
         $ret .= $this->getBoatList($member->getBoats()); 
+        $ret .= "<a href='" . \core\router::$route["member"]["main"]  . "'> Tillbaka</a>"; 
         return $ret; 
     }
 

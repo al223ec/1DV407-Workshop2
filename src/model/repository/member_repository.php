@@ -8,79 +8,69 @@ require_once('./src/model/repository/repository.php');
 
 class MemberRepository extends Repository {
 
+	public function __construct(){
+			$this->TBL_NAME = "member"; 
+	}
+
 	public function getArrayOfMembers(){
-		$db = $this -> connection();
+		$sql = "SELECT * FROM " .$this->TBL_NAME;  
 		$ret = array(); 
-		$sql = "SELECT * FROM " . self::$TBL_NAME;  
-		
-		$sth = $db->prepare($sql); 
-		
-		if(!$sth){
-			throw new \Exception("SQL Error"); 
-		} 
 
-		if(!$sth->execute()){
-			throw new \Exception("SQL Execute Error"); 
-		} 
-		if($response = $sth->fetchAll()){
-
+		if($response = $this->query($sql)){
 			foreach ($response as $memberdbo) {
-				$ret[] = new \model\Member($memberdbo["id"], $memberdbo["name"], $this->getBoatsByMemberId($memberdbo["id"])); 
+				$ret[] = new \model\Member($memberdbo["id"], $memberdbo["name"], $memberdbo["ssn"], $this->getBoatsByMemberId($memberdbo["id"])); 
 			}
 		} 
 		return $ret; 
 	}
 
-
 	private function getBoatsByMemberId($memberId){
-		$db = $this -> connection();
 		$ret = array(); 
 
-		$sql = "SELECT * FROM boat WHERE member_id = ?";   
-		
-		$sth = $db->prepare($sql); 
+		$sql = "SELECT * FROM boat WHERE member_id = :memberId";   
+		//Exempel på query användning med en array
+		$params = array(":memberId" => $memberId); 
 
-		if(!$sth){
-			throw new \Exception("SQL Error"); 
-		} 
-
-		$sth->bindValue(1, $memberId);
-		if(!$sth->execute()){
-			throw new \Exception("SQL Execute Error"); 
-		} 
-		if($response = $sth->fetchAll()){
-
+		if($response = $this->query($sql, $params)){
 			foreach ($response as $boat) {
 				$ret[] = new \model\Boat($boat["type"], $boat["member_id"], $boat["length"], $boat["id"] ); 
 			}
 		} 
 		return $ret; 
-
 	}
 
 	public function getMemberById($id){
-		$db = $this -> connection();
 		$ret = null; 
+		$sql = "SELECT * FROM " . $this->TBL_NAME . " WHERE id = ?";
 
-		$sql = "SELECT * FROM " . self::$TBL_NAME . " WHERE id = ?";   
-		
-		$sth = $db->prepare($sql); 
-		if(!$sth){
-			throw new \Exception("SQL Error"); 
-		} 
-
-		$sth->bindValue(1, $id);
-		if(!$sth->execute()){
-			throw new \Exception("SQL Execute Error"); 
-		} 
-
-		if($memberdbo = $sth->fetch()){
-			$ret = new \model\Member($memberdbo["id"], $memberdbo["name"], $this->getBoatsByMemberId($memberdbo["id"])); 
+		//Exempel på query användning med ett enda argument
+		if($memberdbo = $this->query($sql, $id)[0]){
+			$ret = new \model\Member($memberdbo["id"], $memberdbo["name"], $memberdbo["ssn"], $this->getBoatsByMemberId($memberdbo["id"])); 
 		} 
 		return $ret; 
 	}
 
 	public function deleteMemeber($id){
+
+	}
+
+	public function saveMember($name, $ssn){
+
+	}
+
+	/**
+	* Skulle vara ganska praktiskt att få till detta
+	*/
+	protected function bindObject($object, $dboObject = null){
+		$object = new $object("type", 1, 22, 2);
+
+		$objectVars = get_object_vars($object);
+		var_dump($objectVars); 
+		foreach ($objectVars as $name => $value) {
+ 		   	var_dump("$name : $value");
+		}
+
+		die(); 
 
 	}
 }

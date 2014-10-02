@@ -28,7 +28,8 @@ class MemberModel {
 	* @return True om det lyckas
 	*/
 	public function saveMember($name, $ssn){
-
+		//Kontrollera data, ta emot en member ist?? 
+		
 	}
 
 }

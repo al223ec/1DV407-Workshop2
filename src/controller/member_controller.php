@@ -13,24 +13,28 @@ class MemberController extends Controller {
 
 	private $memberModel; 
 	private $memberView; 
+	private $formView; 
+	private $listView; 
 
 	public function __construct(){
 		$this->memberModel = new \model\MemberModel(); 
 		$this->memberView = new \view\MemberView($this->memberModel); 
+		$this->formView = new \view\member\MemberFormView($this->memberModel); 
+		$this->listView = new \view\member\MemberListView($this->memberModel); 
 	}
 
 	public function main(){
 		$listView = new \view\member\MemberListView($this->memberModel); 
 		
-		if($this->memberView->shouldDispalyFullList()){
-			return $listView->fullList();
+		if($this->listView->shouldDispalyFullList()){
+			return $this->listView->fullList();
 		}
-		return $listView->compactList(); 
+		return $this->listView->compactList(); 
 	}
 
 	public function add(){
-		$formView = new \view\member\MemberFormView($this->memberModel); 
-		return $formView->add(); 
+
+		return $this->formView->add(); 
 	}	
 
 	public function create(){
@@ -47,9 +51,9 @@ class MemberController extends Controller {
 	}
 
 	public function save(){
-		$formView = new \view\member\MemberFormView($this->memberModel); 
-		$un = $formView->getUserName(); 
-		$ssn = $formView->getSsnPost();
+		$un = $this->formView->getUserName(); 
+		$ssn = $this->formView->getSsnPost();
+		$this->memberModel->saveMember($un, $ssn); 
 
 		//Spara sen redirect
 		return "Du har tryckt på sparat, $un, $ssn"; 
@@ -59,5 +63,15 @@ class MemberController extends Controller {
 	public function view(){
 		$member = $this->memberModel->getMemberById(intval($this->params[0])); 
 		return $this->memberView->view($member);
+	}
+
+	public function setCompactList(){
+		$this->listView->setDisplayCompactList(); 
+		$this->listView->redirect(); 
+
+	}
+	public function setFullList(){
+		$this->listView->setDisplayFullList();	
+		$this->listView->redirect(); 
 	}
 }
