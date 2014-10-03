@@ -55,7 +55,11 @@ class MemberRepository extends Repository {
 	}
 
 	public function saveMember($name, $ssn){
+		$sql = "INSERT INTO " . $this->TBL_NAME . "(name, ssn) VALUES( :name, :ssn);"; 
+		$params = array(":name" => $name, ":ssn" => $ssn); 
 
+		$ret = $this->query($sql, $params, true);
+		var_dump($ret); 
 	}
 
 	/**

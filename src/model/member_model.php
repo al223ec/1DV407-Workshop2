@@ -29,7 +29,8 @@ class MemberModel {
 	*/
 	public function saveMember($name, $ssn){
 		//Kontrollera data, ta emot en member ist?? 
-		
+		$this->memberRepository->saveMember($name, $ssn); 
+
 	}
 
 }

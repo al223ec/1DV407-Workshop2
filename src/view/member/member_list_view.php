@@ -7,7 +7,7 @@ require_once('./src/view/view.php');
 class MemberListView extends \view\View{
     
     private $memberModel;
-    private $fullListCookieKey ="MemberView::fullListCookieKey"; 
+    private $fullListCookieKey = "MemberView::fullListCookieKey"; 
 
     public function __construct($memberModel) {
         $this->memberModel = $memberModel; 
@@ -52,8 +52,7 @@ class MemberListView extends \view\View{
             $ret .= $this->getViewEditDeleteLinks("member", $member); 
             $ret .= "</li>";  
             $ret .= "<li>";
-            $ret .= $this->getBoatList($member->getBoats());
-            $ret .= "</li>"; 
+            $ret .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
         }
 
         $ret .= "</ul>";
@@ -62,7 +61,6 @@ class MemberListView extends \view\View{
 
     private function getBoatList($boats){
         $ret = "<ul>";
-
         foreach ($boats as $boat) {
             $ret .= "<li>". $boat . $this->getViewEditDeleteLinks("boat", $boat) . "</li>";
         }

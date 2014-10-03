@@ -21,7 +21,7 @@ abstract class Repository{
 		return $this->dbConnection; 
 
 	} 
-	protected function query($sql, $params = null){
+	protected function query($sql, $params = null, $insert = false){
 		$db = $this->connection();
 		$query = $db->prepare($sql); 
 
@@ -34,9 +34,14 @@ abstract class Repository{
 			$query->execute(); 
 		}
 
+		if($insert){
+			return true; 
+		}
+		
 		if($response = $query->fetchAll()){
 			return $response; 
 		} 
+
 		return null;
 	}
 
