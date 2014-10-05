@@ -2,9 +2,9 @@
 
 namespace view\member;
 
-require_once('./src/view/view.php'); 
+//require_once('./src/view/view.php'); 
 
-class MemberListView extends \view\View{
+class MemberListView extends \core\View{
     
     private $memberModel;
     private $fullListCookieKey = "MemberView::fullListCookieKey"; 
@@ -69,16 +69,16 @@ class MemberListView extends \view\View{
     }
 
     private function getViewEditDeleteLinks($controller, $obj){
-        return "<a href='" . \core\router::$route[$controller]["view"]  . $obj->getId() ."'> Visa</a> | 
-                <a href='" . \core\router::$route[$controller]["edit"]  . $obj->getId() ."'> Edit</a>  | 
-                <a href='" . \core\router::$route[$controller]["delete"]  . $obj->getId() ."'> delete</a>";
+        return "<a href='" . \Routes::getRoute($controller, 'view')  . $obj->getId() ."'> Visa</a> | 
+                <a href='" . \Routes::getRoute($controller, 'edit')  . $obj->getId() ."'> Edit</a>  | 
+                <a href='" . \Routes::getRoute($controller, 'delete')  . $obj->getId() ."'> delete</a>";
     }
     
     private function listFooter(){
-        return "<a href='" . \core\router::$route["member"]["add"] . "'> Lägg till</a>";
+        return "<a href='" . \Routes::getRoute('member', 'add') . "'> Lägg till</a>";
     }
     private function listHeader(){
-        return "<a href='" . \core\router::$route["member"]["setcompact"] . "'> Compact lista </a> |
-            <a href='" . \core\router::$route["member"]["setfull"] . "'> Full lista </a>";  
+        return "<a href='" . \Routes::getRoute('member', 'setcompact'). "'> Compact lista </a> |
+            <a href='" . \Routes::getRoute('member', 'setfull') . "'> Full lista </a>";  
     }
 }

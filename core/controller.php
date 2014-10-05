@@ -1,6 +1,6 @@
 <?php
 
-namespace controller; 
+namespace core; 
 
 abstract class Controller{
 
@@ -10,5 +10,10 @@ abstract class Controller{
 
 	public function setParams($params){
 		$this->params = $params; 
+	}
+	
+	protected function redirectTo($controller = '', $action = ''){
+		header('Location: ' . ROOT_PATH . $controller . '/' . $action);
+		exit;
 	}
 }

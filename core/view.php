@@ -1,19 +1,13 @@
 <?php
 
-namespace view; 
+namespace core; 
 
 class View{
-/*
-	protected $model; 
-	public function __construct($model){
-		$this->model = $model; 
-	}
-*/
 	protected function getInput($inputName){
-		return isset($_POST[$inputName]) ? $_POST[$inputName] : "";
+		return isset($_POST[$inputName]) ? $_POST[$inputName] : '';
 	}
 	protected function getCleanInput($inputName) {
-		return isset($_POST[$inputName]) ? $this->sanitize($_POST[$inputName]) : "";
+		return isset($_POST[$inputName]) ? $this->sanitize($_POST[$inputName]) : '';
 	}
 	protected function sanitize($input) {
         $temp = trim($input);
@@ -21,6 +15,6 @@ class View{
     }	
 
     public function redirect(){
-		header("Location: " . \config\Config::AppRoot);
+		header('Location: ' . ROOT_PATH);
     }
 }
