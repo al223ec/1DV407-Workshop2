@@ -1,10 +1,6 @@
 <?php
 
-namespace model\repository; 
-
-//require_once('./src/model/member.php'); 
-//require_once('./src/model/boat.php'); 
-//require_once('./src/model/repository/repository.php'); 
+namespace model\repository;
 
 class MemberRepository extends \core\Repository {
 
@@ -40,6 +36,7 @@ class MemberRepository extends \core\Repository {
 	}
 
 	public function getMemberById($id){
+		/*
 		$ret = null; 
 		$sql = "SELECT * FROM " . $this->table . " WHERE id = ?";
 
@@ -48,6 +45,12 @@ class MemberRepository extends \core\Repository {
 			$ret = new \model\Member($memberdbo["id"], $memberdbo["name"], $memberdbo["ssn"], $this->getBoatsByMemberId($memberdbo["id"])); 
 		} 
 		return $ret; 
+		*/
+		$result = $this->findBy('id', $id);
+		if($result !== null){
+			return new \model\Member($result['id'], $result['name'], $result['ssn'], $this->getBoatsByMemberId($result['id']));
+		}
+		return null;
 	}
 
 	public function deleteMemeber($id){

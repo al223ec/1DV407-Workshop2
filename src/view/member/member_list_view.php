@@ -2,8 +2,6 @@
 
 namespace view\member;
 
-//require_once('./src/view/view.php'); 
-
 class MemberListView extends \core\View{
     
     private $memberModel;
