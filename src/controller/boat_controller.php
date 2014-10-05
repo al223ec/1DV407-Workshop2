@@ -1,7 +1,7 @@
 <?php
 
 namespace controller; 
-//require_once('src/controller/controller.php');
+
 class BoatController extends \core\Controller {
 
 	public function main(){

@@ -7,9 +7,6 @@
  */
 namespace view; 
 
-//require_once('./src/model/member_model.php');
-//require_once('./src/view/view.php');
-
 class MemberView extends \core\View{
     
     private $memberModel;

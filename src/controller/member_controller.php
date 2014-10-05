@@ -2,13 +2,6 @@
 
 namespace controller; 
 
-//require_once('src/controller/controller.php'); 
-//require_once('src/view/member_view.php'); 
- 
-//require_once('src/view/member/member_list_view.php'); 
-//require_once('src/view/member/member_form_view.php'); 
-//require_once('src/model/member_model.php'); 
-
 class MemberController extends \core\Controller {
 
 	private $memberModel; 
@@ -55,24 +48,23 @@ class MemberController extends \core\Controller {
 		$ssn = $this->formView->getSsnPost();
 		$this->memberModel->saveMember($un, $ssn);
 		$this->redirectTo('member');
-		//$this->formView->redirect();
-		//exit(); 
 	}
 
 	public function view(){
 		$member = $this->memberModel->getMemberById(intval($this->params[0])); 
-		return $this->memberView->view($member);
+		if($member !== null){
+			return $this->memberView->view($member);
+		}
+		$this->redirectTo('member');
 	}
 
 	public function setCompactList(){
 		$this->listView->setDisplayCompactList(); 
 		$this->redirectTo('member');
-		//$this->listView->redirect(); 
 
 	}
 	public function setFullList(){
 		$this->listView->setDisplayFullList();
 		$this->redirectTo('member');
-		//$this->listView->redirect(); 
 	}
 }

@@ -1,8 +1,6 @@
 <?php
 
-namespace model; 
-
-//require_once("./src/model/repository/member_repository.php");
+namespace model;
 
 class MemberModel {
 	
