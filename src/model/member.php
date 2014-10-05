@@ -21,7 +21,7 @@ class Member{
 	}
 
 	public function __toString(){
-		return $this->name . " ssn: ". $this->ssn; 
+		return $this->name . ' ssn: '. $this->ssn; 
 
 	}
 

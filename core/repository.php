@@ -1,21 +1,16 @@
 <?php 
 
-namespace model\repository; 
+namespace core; 
 
 abstract class Repository{
-			/* local /*/ 
-	protected static $DB_PASSWORD = ""; 
-	protected static $DB_USERNAME = "root"; 
-	protected $TBL_NAME = "member"; 
-	protected static $CONNECTIONSTRING = "mysql:host=127.0.0.1;dbname=workshopdb";
-
 	private $dbConnection; 
+	protected $table;
 	/**
 	* @return PDO object, 
 	*/
 	protected function connection(){
 		if($this->dbConnection == null){
-			$this->dbConnection = new \PDO(self::$CONNECTIONSTRING, self::$DB_USERNAME, self::$DB_PASSWORD);
+			$this->dbConnection = new \PDO(\Config::DB_CONNECTION_STRING, \Config::DB_USERNAME, \Config::DB_PASSWORD);
 			$this->dbConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		} 
 		return $this->dbConnection; 

@@ -2,18 +2,18 @@
 
 namespace model\repository; 
 
-require_once('./src/model/member.php'); 
-require_once('./src/model/boat.php'); 
-require_once('./src/model/repository/repository.php'); 
+//require_once('./src/model/member.php'); 
+//require_once('./src/model/boat.php'); 
+//require_once('./src/model/repository/repository.php'); 
 
-class MemberRepository extends Repository {
+class MemberRepository extends \core\Repository {
 
 	public function __construct(){
-			$this->TBL_NAME = "member"; 
+			$this->table = "member"; 
 	}
 
 	public function getArrayOfMembers(){
-		$sql = "SELECT * FROM " .$this->TBL_NAME;  
+		$sql = "SELECT * FROM " .$this->table;  
 		$ret = array(); 
 
 		if($response = $this->query($sql)){
@@ -41,7 +41,7 @@ class MemberRepository extends Repository {
 
 	public function getMemberById($id){
 		$ret = null; 
-		$sql = "SELECT * FROM " . $this->TBL_NAME . " WHERE id = ?";
+		$sql = "SELECT * FROM " . $this->table . " WHERE id = ?";
 
 		//Exempel på query användning med ett enda argument
 		if($memberdbo = $this->query($sql, $id)[0]){
@@ -55,11 +55,10 @@ class MemberRepository extends Repository {
 	}
 
 	public function saveMember($name, $ssn){
-		$sql = "INSERT INTO " . $this->TBL_NAME . "(name, ssn) VALUES( :name, :ssn);"; 
+		$sql = "INSERT INTO " . $this->table . "(name, ssn) VALUES( :name, :ssn);"; 
 		$params = array(":name" => $name, ":ssn" => $ssn); 
 
 		$ret = $this->query($sql, $params, true);
-		var_dump($ret); 
 	}
 
 	/**

@@ -2,7 +2,7 @@
 
 namespace model; 
 
-require_once("./src/model/repository/member_repository.php");
+//require_once("./src/model/repository/member_repository.php");
 
 class MemberModel {
 	
@@ -28,7 +28,8 @@ class MemberModel {
 	* @return True om det lyckas
 	*/
 	public function saveMember($name, $ssn){
-		//Kontrollera data, ta emot en member ist?? 
+		//Kontrollera data, ta emot en member ist??
+		//nja ;)
 		$this->memberRepository->saveMember($name, $ssn); 
 
 	}

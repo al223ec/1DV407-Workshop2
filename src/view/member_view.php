@@ -7,28 +7,38 @@
  */
 namespace view; 
 
-require_once("./src/model/member_model.php");
-require_once("./src/view/view.php");
+//require_once('./src/model/member_model.php');
+//require_once('./src/view/view.php');
 
-class MemberView extends View{
+class MemberView extends \core\View{
     
     private $memberModel;
     
     public function view($member){
-        $ret = " <h1> Medlem </h1><h2>" . $member . "</h2>
-            <p> ". $member->getSsn() ."</p>"; 
-        $ret .= $this->getBoatList($member->getBoats()); 
-        $ret .= "<a href='" . \core\router::$route["member"]["main"]  . "'> Tillbaka</a>"; 
-        return $ret; 
+        return '
+            <h1> Medlem </h1>
+            <h2>' . $member . '</h2>
+            <p> '. $member->getSsn() .'</p>'
+             . $this->getBoatList($member) .
+             '<a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
+        '; 
     }
 
-    private function getBoatList($boats){
-        $ret = "<ul>";
-
-        foreach ($boats as $boat) {
-            $ret .= "<li>" . $boat. "</li>";
+    private function getBoatList($member){
+        $boatsHTML = '';
+        $boats = $member->getBoats();
+        if(!empty($boats)){
+            foreach($boats->getBoats() as $boat){
+                $boatsHTML .= '<li>' . $boat. '</li>';
+            }
+            
+            $boatsHTML = '
+                <ul>
+                    ' . $boatsHTML . '
+                </ul>
+                
+            ';
         }
-        $ret .= "</ul>";
-        return $ret; 
+        return $boatsHTML;
     }
 }

@@ -2,14 +2,14 @@
 
 namespace controller; 
 
-require_once("src/controller/controller.php"); 
-require_once("src/view/member_view.php"); 
+//require_once('src/controller/controller.php'); 
+//require_once('src/view/member_view.php'); 
  
-require_once("src/view/member/member_list_view.php"); 
-require_once("src/view/member/member_form_view.php"); 
-require_once("src/model/member_model.php"); 
+//require_once('src/view/member/member_list_view.php'); 
+//require_once('src/view/member/member_form_view.php'); 
+//require_once('src/model/member_model.php'); 
 
-class MemberController extends Controller {
+class MemberController extends \core\Controller {
 
 	private $memberModel; 
 	private $memberView; 
@@ -38,24 +38,25 @@ class MemberController extends Controller {
 	}	
 
 	public function create(){
-		return "create"; 
+		return 'create'; 
 	}
 
 	public function delete(){
-		return "delete"; 
+		return 'delete'; 
 	}
 
 	public function edit(){
 		//Samma som create??
-		return "edit";  
+		return 'edit';  
 	}
 
 	public function save(){
 		$un = $this->formView->getUserName(); 
 		$ssn = $this->formView->getSsnPost();
-		$this->memberModel->saveMember($un, $ssn); 
-		$this->formView->redirect();
-		exit(); 
+		$this->memberModel->saveMember($un, $ssn);
+		$this->redirectTo('member');
+		//$this->formView->redirect();
+		//exit(); 
 	}
 
 	public function view(){
@@ -65,11 +66,13 @@ class MemberController extends Controller {
 
 	public function setCompactList(){
 		$this->listView->setDisplayCompactList(); 
-		$this->listView->redirect(); 
+		$this->redirectTo('member');
+		//$this->listView->redirect(); 
 
 	}
 	public function setFullList(){
-		$this->listView->setDisplayFullList();	
-		$this->listView->redirect(); 
+		$this->listView->setDisplayFullList();
+		$this->redirectTo('member');
+		//$this->listView->redirect(); 
 	}
 }
