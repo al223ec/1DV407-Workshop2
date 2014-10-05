@@ -15,7 +15,19 @@ abstract class Repository{
 		} 
 		return $this->dbConnection; 
 
-	} 
+	}
+	
+	protected function findBy($column, $value){
+		$sql = "
+			SELECT " . $this->table . ".*
+			FROM " . $this->table . "
+			WHERE ". $this->table ."." . $column . " = :value
+		";
+		$params = array(":value" => $value);
+		$result = $this->query($sql, $params);
+		return ($result !== null) ? $result[0] : null;
+	}
+	 
 	protected function query($sql, $params = null, $insert = false){
 		$db = $this->connection();
 		$query = $db->prepare($sql); 
