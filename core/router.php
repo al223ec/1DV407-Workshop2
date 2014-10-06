@@ -53,31 +53,6 @@ class Router{
 	    return $this->params;  
 	}
 
-	/*
-	public static function initRoutes(){
-		self::$route = array(
-			'member' => array(
-				'main' =>  \config\Config::AppRoot . 'member/', 
-				'view' =>  \config\Config::AppRoot . 'member/view/', 
-				'edit' =>  \config\Config::AppRoot . 'member/edit/',
-				'delete' =>  \config\Config::AppRoot . 'member/delete/',
-				'save' =>  \config\Config::AppRoot . 'member/save/',
-				'add' =>  \config\Config::AppRoot . 'member/add/',
-				'setcompact' =>  \config\Config::AppRoot . 'member/setCompactList/',
-				'setfull' =>  \config\Config::AppRoot . 'member/setFullList/',
-				),
-			'boat' => array(
-				'main' =>  \config\Config::AppRoot . 'boat/', 
-				'view' =>  \config\Config::AppRoot . 'boat/view/', 
-				'edit' =>  \config\Config::AppRoot . 'boat/edit/',
-				'delete' =>  \config\Config::AppRoot . 'boat/delete/',
-				'save' =>  \config\Config::AppRoot . 'boat/save/',
-				'add' =>  \config\Config::AppRoot . 'boat/add/',
-				)
-			);
-	}
-	*/
-
 	public function dispatch(){
 		$controller = $this->getController();
 		$action = $this->getAction();
@@ -100,30 +75,3 @@ class Router{
 		}
 	} 
 }
-
-function AutoLoadClasses($class){
-	$class = ltrim($class, '\\');
-	
-	
-	$classFile = lcfirst(substr($class, strripos($class, '\\') + 1));
-	preg_match_all( '/[A-Z]/', $classFile, $matches, PREG_OFFSET_CAPTURE );
-	if(!empty($matches)){
-		for($i=0; $i < count($matches[0]); $i++){
-			if(!empty($matches[0][$i])){
-				$m = $matches[0][$i];
-				$classFile = substr_replace($classFile, '_' . strToLower($m[0]), $m[1] + $i, 1);
-			}
-		}
-	}
-	
-	$fileDir = explode('\\', $class, -1);
-	$fileDir = strToLower(implode(DS, $fileDir));
-	
-	$filePath = SRC_DIR . $fileDir . DS . $classFile . '.php';
-	if(!file_exists($filePath)){
-		return false;
-	}
-	require_once($filePath);
-}
-
-spl_autoload_register('core\AutoLoadClasses');
