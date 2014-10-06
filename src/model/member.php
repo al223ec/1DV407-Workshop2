@@ -40,4 +40,7 @@ class Member{
 	public function getSsn(){
 		return $this->ssn;
 	}
+	public function getName(){
+		return $this->name; 
+	}
 }

@@ -23,47 +23,35 @@ class MemberListView extends \core\View{
         setcookie ($this->fullListCookieKey, "", time() - 400000, '/');
     }
 
-   	public function compactList(){
-        $ret = $this->listHeader(); 
-        $ret .= "<ul>";  
+    public function getMemeberList($displayFullList){
+        $list = "";
         $members = $this->memberModel->getArrayOfMembers(); 
 
         foreach ($members as $member) {
-            $ret .= "<li>" . $member;
-            $ret .= " Antal båtar: " . $member->getNumberOfBoats();
-            $ret .= $this->getViewEditDeleteLinks("member", $member); 
-            $ret .= "</li>";            
+            $list .= '<li>' . $member;
+            $list .= $this->getViewEditDeleteLinks("member", $member); 
+            $list .= '</li>';  
+            if($displayFullList){
+                $list .= '<li>';
+                $list .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
+            }
         }
 
-        $ret .= "</ul>";
-
-        return $ret . $this->listFooter();
-    }
-
-    public function fullList(){
-        $ret = $this->listHeader(); 
-        $ret .= "<ul>"; 
-        $members = $this->memberModel->getArrayOfMembers(); 
-        
-        foreach ($members as $member) {
-            $ret .= "<li>" . $member;
-            $ret .= $this->getViewEditDeleteLinks("member", $member); 
-            $ret .= "</li>";  
-            $ret .= "<li>";
-            $ret .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
-        }
-
-        $ret .= "</ul>";
-        return $ret . $this->listFooter();
+        $list = '<ul>' 
+                . $list . 
+                '</ul>';
+        return $this->listHeader() . $list . $this->listFooter();
     }
 
     private function getBoatList($boats){
-        $ret = "<ul>";
+        $list = "";
         foreach ($boats as $boat) {
-            $ret .= "<li>". $boat . $this->getViewEditDeleteLinks("boat", $boat) . "</li>";
+            $list .= '<li>'. $boat . $this->getViewEditDeleteLinks("boat", $boat) . '</li>';
         }
-        $ret .= "</ul>";
-        return $ret; 
+        $list = '<ul>' 
+                . $list . 
+                '</ul>';
+        return $list; 
     }
 
     private function getViewEditDeleteLinks($controller, $obj){

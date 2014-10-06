@@ -18,16 +18,11 @@ class MemberController extends \core\Controller {
 
 	public function main(){
 		$listView = new \view\member\MemberListView($this->memberModel); 
-		
-		if($this->listView->shouldDispalyFullList()){
-			return $this->listView->fullList();
-		}
-		return $this->listView->compactList(); 
+		return $this->listView->getMemeberList($this->listView->shouldDispalyFullList());
 	}
 
 	public function add(){
-
-		return $this->formView->add(); 
+		return $this->formView->getAddEditForm(); 
 	}	
 
 	public function create(){
@@ -39,14 +34,16 @@ class MemberController extends \core\Controller {
 	}
 
 	public function edit(){
-		//Samma som create??
-		return 'edit';  
+		return $this->formView->getAddEditForm($this->memberModel->getMemberById(intval($this->params[0])));
 	}
 
 	public function save(){
-		$un = $this->formView->getUserName(); 
+		$un = $this->formView->getName(); 
 		$ssn = $this->formView->getSsnPost();
-		$this->memberModel->saveMember($un, $ssn);
+		
+		$currentMemberId = var_dump(intval($this->params[0])); 
+
+		$this->memberModel->saveMember($currentMemberId, $un, $ssn);
 		$this->redirectTo('member');
 	}
 

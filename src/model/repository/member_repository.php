@@ -36,16 +36,6 @@ class MemberRepository extends \core\Repository {
 	}
 
 	public function getMemberById($id){
-		/*
-		$ret = null; 
-		$sql = "SELECT * FROM " . $this->table . " WHERE id = ?";
-
-		//Exempel på query användning med ett enda argument
-		if($memberdbo = $this->query($sql, $id)[0]){
-			$ret = new \model\Member($memberdbo["id"], $memberdbo["name"], $memberdbo["ssn"], $this->getBoatsByMemberId($memberdbo["id"])); 
-		} 
-		return $ret; 
-		*/
 		$result = $this->findBy('id', $id);
 		if($result !== null){
 			return new \model\Member($result['id'], $result['name'], $result['ssn'], $this->getBoatsByMemberId($result['id']));
@@ -63,7 +53,11 @@ class MemberRepository extends \core\Repository {
 
 		$ret = $this->query($sql, $params, true);
 	}
-
+	public function updateMember($id, $name, $ssn){
+		var_dump($id); 
+		var_dump($name); 
+		var_dump($ssn); die();
+	}
 	/**
 	* Skulle vara ganska praktiskt att få till detta
 	*/

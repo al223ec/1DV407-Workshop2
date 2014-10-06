@@ -13,11 +13,11 @@ class MemberModel {
 	public function getArrayOfMembers(){
 		return $this->memberRepository->getArrayOfMembers(); 
 	}
-
+/*
 	public function getCompactArrayOfMembers(){
 
 	}
-
+*/
 	public function getMemberById($id){
 		return $this->memberRepository->getMemberById($id); 
 	}
@@ -25,10 +25,14 @@ class MemberModel {
 	/**
 	* @return True om det lyckas
 	*/
-	public function saveMember($name, $ssn){
+	public function saveMember($id, $name, $ssn){
 		//Kontrollera data, ta emot en member ist??
 		//nja ;)
-		$this->memberRepository->saveMember($name, $ssn); 
+		if($id === 0){
+			$this->memberRepository->saveMember($name, $ssn); 
+		}else{
+			$this->memberRepository->updateMember($id, $name, $ssn); 
+		}
 
 	}
 
