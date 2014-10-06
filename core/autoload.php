@@ -24,4 +24,4 @@ function AutoLoadClasses($class){
 	require_once($filePath);
 }
 
-spl_autoload_register('core\AutoLoadClasses');
+spl_autoload_register('AutoLoadClasses');
