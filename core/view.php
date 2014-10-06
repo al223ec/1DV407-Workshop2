@@ -3,6 +3,7 @@
 namespace core; 
 
 class View{
+
 	protected function getInput($inputName){
 		return isset($_POST[$inputName]) ? $_POST[$inputName] : '';
 	}

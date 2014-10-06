@@ -51,12 +51,15 @@ class MemberRepository extends \core\Repository {
 		$sql = "INSERT INTO " . $this->table . "(name, ssn) VALUES( :name, :ssn);"; 
 		$params = array(":name" => $name, ":ssn" => $ssn); 
 
-		$ret = $this->query($sql, $params, true);
+		return $this->query($sql, $params, true);
+
 	}
+	
 	public function updateMember($id, $name, $ssn){
-		var_dump($id); 
-		var_dump($name); 
-		var_dump($ssn); die();
+ 		$sql = "UPDATE " . $this->table . " SET name = :name, ssn = :ssn WHERE id = :id"; 
+		$params = array(":name" => $name, ":ssn" => $ssn, ":id" => $id); 
+
+		return $this->query($sql, $params, true);
 	}
 	/**
 	* Skulle vara ganska praktiskt att få till detta

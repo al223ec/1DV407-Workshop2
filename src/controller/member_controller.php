@@ -28,6 +28,9 @@ class MemberController extends \core\Controller {
 	public function create(){
 		return 'create'; 
 	}
+	
+	public function update(){
+	}
 
 	public function delete(){
 		return 'delete'; 
@@ -38,13 +41,17 @@ class MemberController extends \core\Controller {
 	}
 
 	public function save(){
+		//Kanske separera på create och update
 		$un = $this->formView->getName(); 
 		$ssn = $this->formView->getSsnPost();
-		
-		$currentMemberId = var_dump(intval($this->params[0])); 
+		$currentMemberId = $this->formView->getMemberId();
+		$successfull = $this->memberModel->saveMember($un, $ssn, $currentMemberId);
 
-		$this->memberModel->saveMember($currentMemberId, $un, $ssn);
-		$this->redirectTo('member');
+		if($successfull){
+			$this->redirectTo('member');
+		}else{
+			return $this->formView->getAddEditForm($this->memberModel->getMemberById($currentMemberId));
+		}
 	}
 
 	public function view(){
