@@ -4,7 +4,7 @@ namespace core;
 
 class Router{
 
-	public static $route;
+	//public static $route;
 
 	private $controller;
 	private $action;

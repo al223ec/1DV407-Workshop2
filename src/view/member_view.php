@@ -25,7 +25,7 @@ class MemberView extends \core\View{
         $boatsHTML = '';
         $boats = $member->getBoats();
         if(!empty($boats)){
-            foreach($boats->getBoats() as $boat){
+            foreach($boats as $boat){
                 $boatsHTML .= '<li>' . $boat. '</li>';
             }
             
@@ -33,7 +33,6 @@ class MemberView extends \core\View{
                 <ul>
                     ' . $boatsHTML . '
                 </ul>
-                
             ';
         }
         return $boatsHTML;

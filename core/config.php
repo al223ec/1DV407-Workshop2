@@ -14,7 +14,7 @@ abstract class Config{
 	const DEBUG = true;
 	const ERROR_LOG = "myerrors.log"; 
 	
-	const DB_PASSWORD = "hulken";
+	const DB_PASSWORD = "";
 	const DB_USERNAME = "root";
 	const DB_CONNECTION_STRING = "mysql:host=127.0.0.1;dbname=workshopdb";
 	
