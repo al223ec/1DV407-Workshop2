@@ -12,8 +12,15 @@ abstract class Controller{
 		$this->params = $params; 
 	}
 	
-	protected function redirectTo($controller = '', $action = ''){
-		header('Location: ' . ROOT_PATH . $controller . '/' . $action);
+	protected function redirectTo($controller = null, $action = null, $param = null){
+		$path = ($controller !== null) ? $controller : \Config::DEFAULT_CONTROLLER;
+		if($action !== null){
+			$path .= '/' . $action;
+			if($param !== null){
+				$path.= '/' . $param;
+			}
+		}
+		header('Location: ' . ROOT_PATH . $path);
 		exit;
 	}
 }
