@@ -11,6 +11,8 @@ class HTMLView{
 			<html>
 			<head>
 				<meta charset="UTF-8">
+
+				<link href="' . ROOT_PATH . 'css/bootstrap.min.css" rel="stylesheet" />
 				<link href="' . ROOT_PATH . 'css/style.css" rel="stylesheet" />
 				<title> Workshop 2 - Design </title>
 			</head>
