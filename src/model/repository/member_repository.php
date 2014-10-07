@@ -29,7 +29,7 @@ class MemberRepository extends \core\Repository {
 
 		if($response = $this->query($sql, $params)){
 			foreach ($response as $boat) {
-				$ret[] = new \model\Boat($boat["type"], $boat["member_id"], $boat["length"], $boat["id"] ); 
+				$ret[] = new \model\Boat($boat["id"], $boat["member_id"], $boat["type"], $boat["length"]); 
 			}
 		} 
 		return $ret; 

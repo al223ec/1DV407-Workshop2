@@ -13,7 +13,6 @@ class Routes{
 			'setfull' => 'member/setFullList/',
 		),
 		'boat' => array(
-			'view' => 'boat/view/',
 			'add' => 'boat/add/',
 			'create' => 'boat/create/',
 			'edit' => 'boat/edit/',
