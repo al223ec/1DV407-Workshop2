@@ -14,7 +14,11 @@ class MemberRepository extends \core\Repository {
 
 		if($response = $this->query($sql)){
 			foreach ($response as $memberdbo) {
-				$ret[] = new \model\Member($memberdbo["id"], $memberdbo["name"], $memberdbo["ssn"], $this->getBoatsByMemberId($memberdbo["id"])); 
+				$member = new \model\Member($memberdbo['id']); 
+				$member->setName($memberdbo['name']); 
+				$member->setSsn($memberdbo['ssn']); 
+				$member->setBoats($this->getBoatsByMemberId($memberdbo['id'])); 
+				$ret[] = $member; 
 			}
 		} 
 		return $ret; 
@@ -38,7 +42,12 @@ class MemberRepository extends \core\Repository {
 	public function getMemberById($id){
 		$result = $this->findBy('id', $id);
 		if($result !== null){
-			return new \model\Member($result['id'], $result['name'], $result['ssn'], $this->getBoatsByMemberId($result['id']));
+			$member = new \model\Member($result['id']); 
+			$member->setName($result['name']); 
+			$member->setSsn($result['ssn']); 
+			$member->setBoats($this->getBoatsByMemberId($result['id'])); 
+			
+			return $member; 
 		}
 		return null;
 	}

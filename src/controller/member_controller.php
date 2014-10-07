@@ -42,11 +42,12 @@ class MemberController extends \core\Controller {
 
 	public function save(){
 		//Kanske separera på create och update
-		$un = $this->formView->getName(); 
+		$name = $this->formView->getName(); 
 		$ssn = $this->formView->getSsnPost();
 		$currentMemberId = $this->formView->getMemberId();
-		$successfull = $this->memberModel->saveMember($un, $ssn, $currentMemberId);
-
+		
+		$successfull = $this->memberModel->saveMember($name, $ssn, $currentMemberId);
+		
 		if($successfull){
 			$this->redirectTo('member');
 		}else{

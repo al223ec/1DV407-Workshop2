@@ -10,3 +10,14 @@
 label{
 	width: 180px; 
 }
+#members>li:nth-child(odd) {
+    background: #ccc;
+}
+
+#members>li>ul>li:nth-child(odd) {
+    background: #999;
+}
+
+ul li ul li {
+    list-style: none;
+}

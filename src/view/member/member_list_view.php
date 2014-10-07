@@ -30,14 +30,17 @@ class MemberListView extends \core\View{
         foreach ($members as $member) {
             $list .= '<li>' . $member;
             $list .= $this->getViewEditDeleteLinks("member", $member); 
-            $list .= '</li>';  
+            
             if($displayFullList){
-                $list .= '<li>';
                 $list .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
+            }else{
+                $list .= " Antal båtar: " . $member->getNumberOfBoats();  
             }
+
+            $list .= '</li>';  
         }
 
-        $list = '<ul>' 
+        $list = '<ul id="members">' 
                 . $list . 
                 '</ul>';
         return $this->listHeader() . $list . $this->listFooter();

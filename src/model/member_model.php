@@ -6,9 +6,6 @@ class MemberModel {
 	
 	private $memberRepository; 
 
-	private $nameMinLength = 3; 
-	private $validChars = "/\D/"; 
-
 	public function __construct(){
 		$this->memberRepository = new repository\MemberRepository(); 
 	}
@@ -32,20 +29,18 @@ class MemberModel {
 	* @return True om det lyckas
 	*/
 	public function saveMember($name, $ssn, $id = 0){
-		$ssn = preg_replace($this->validChars, '', $ssn);
-		if(!is_int($id) || !$this->nameIsValid($name)){
+		$member = new \model\Member($id); 
+		$member->setName($name); 
+		$member->setSsn($ssn); 
+		if(!$member->isValid()){
 			return false; 
 		}
-		//Kontrollera data
+		//Skicka member objektet vidare?? 
 		if($id === 0){
 			return $this->memberRepository->saveMember($name, $ssn); 
 		}else{
+			//Här kan man hämta den existerande medlemmen 
 			return $this->memberRepository->updateMember($id, $name, $ssn); 
 		}
 	}
-
-	private function nameIsValid($name){
-		return strlen($name) > $this->nameMinLength; 
-	}
-
 }

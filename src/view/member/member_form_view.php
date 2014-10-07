@@ -3,62 +3,45 @@
 namespace view\member; 
 
 class MemberFormView extends \core\View {
-    //bör ärva detta från ytterligare en vy bas klass
-	const FlashClassError = 'error';
-    const FlashClassSuccess = 'success';
-    const FlashClassWarning = 'warning';
-
-    protected $strFlashKey = 'View::FlashMessages';
-
-    public function addFlash($strMessage, $strType){
-        if($strType !== self::FlashClassError && $strType !== self::FlashClassSuccess && $strType !== self::FlashClassWarning ){
-            throw new \Exception("View::addFlash wrong key sent!!");
-        }
-        $_SESSION[$this->strFlashKey][$strType][] = $strMessage;
-    }
-    
-    protected function renderFlash(){
-        $arrFlash = (isset($_SESSION[$this->strFlashKey])) ? $_SESSION[$this->strFlashKey] : array();
-        $strFlash = '';
-
-        foreach($arrFlash as $type => $arrMessages){
-            $strMessages = '';
-            foreach($arrMessages as $strMessage){
-                $strMessages .= $type . ": " . $strMessage . '</br>';
-            }
-            $strFlash .='<p class="flash" />' 
-                        . $strMessages . 
-                        '</p>';
-        }
-
-        unset($_SESSION[$this->strFlashKey]);
-        return $strFlash;
-    }
-
-
-
-	private $namePost = 'MemberView::NamePost'; 
+   
+   	private $namePost = 'MemberView::NamePost'; 
     private $ssnPost = 'MemberView::ssnPost'; 
     private $memberIdPost = 'MemberView::MemberId'; 
+    private $flashMessages; 
+
+    private $flashKey = "MemberFormView::FlashKey"; 
 
     private $memberModel;
-    private $errors; 
 
     public function __construct($memberModel) {
-        $this->memberModel = $memberModel; 
+        $this->memberModel = $memberModel;
+        $this->flashMessages = new \view\FlashMessages($this->flashKey);
     }
     
     public function getName(){
-        $name = $this->getCleanInput($this->namePost); 
-        
-        if(strlen($name) < 3){
-            $this->addFlash("För kort namn!", self::FlashClassError); 
-        }
+        $name = $this->getCleanInput($this->namePost);
+
+        if(strlen($name) < \model\Member::$nameMinLength){
+            $this->flashMessages->addFlash("För kort namn!", \view\FlashMessages::FlashClassError); 
+            return ""; 
+        } 
         return $name; 
     }
 
     public function getSsnPost(){
-        return $this->getCleanInput($this->ssnPost); 
+        $ssn = $this->getCleanInput($this->ssnPost); 
+        $ssn = preg_replace(\model\Member::$validChars, '', $ssn); 
+        if(strlen($ssn) < \model\Member::$ssnMinLength){
+            $this->flashMessages->addFlash("För kort ssn!", \view\FlashMessages::FlashClassError); 
+            return ""; 
+        } else if (strlen($ssn) > \model\Member::$ssnMaxLength ) {
+            $this->flashMessages->addFlash("För lång ssn! Ange ssn i 881078-XXXX format", \view\FlashMessages::FlashClassError); 
+            return ""; 
+        } else if($ssn !== $this->getCleanInput($this->ssnPost)){
+            $this->flashMessages->addFlash("Ssn innehåller ogiltiga tecken endast siffror tillåtet!", \view\FlashMessages::FlashClassError); 
+            return ""; 
+        }
+        return $ssn; 
     }
 
     public function getMemberId(){
@@ -70,14 +53,13 @@ class MemberFormView extends \core\View {
         $ssn = ""; 
         $id = 0; 
 
-
         if($member !== null){
             $name = $member->getName(); 
             $ssn = $member->getSsn(); 
             $id = $member->getId(); 
         }
 
-        return $this->renderFlash() .
+        return $this->flashMessages->renderFlash() .
         '
             <form method="post" action="' . \Routes::getRoute('member', 'save') . '">
                 <fieldset>
@@ -85,7 +67,7 @@ class MemberFormView extends \core\View {
                         <label for="' . $this->namePost . '">Name:</label>
                             <input type="text" size="20" name="' . $this->namePost . '" id="' . $this->namePost . '" value="'. $name .'">
                         <label for="' . $this->ssnPost . '">SSN:</label>
-                            <input type="text" size="20" name="' . $this->ssnPost . '" id="' . $this->ssnPost . '" value="'. $ssn .'">
+                            <input type="text" size="13" name="' . $this->ssnPost . '" id="' . $this->ssnPost . '" value="'. $ssn .'">
                     
                         <input type="hidden" name="'. $this->memberIdPost . '" id="'. $this->memberIdPost . '" value="'. $id . '">
 
