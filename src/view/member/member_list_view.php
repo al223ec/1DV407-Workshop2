@@ -44,9 +44,15 @@ class MemberListView extends \core\View{
     }
 
     private function getBoatList($boats){
-        $list = "";
+        $list = '';
         foreach ($boats as $boat) {
-            $list .= '<li>'. $boat . $this->getViewEditDeleteLinks("boat", $boat) . '</li>';
+            $list .= '
+                <li>
+                    '. $boat . ' - 
+                    <a href="' . \Routes::getRoute('boat', 'edit')  . $boat->getId() .'"> Edit</a>  | 
+                    <a href="' . \Routes::getRoute('boat', 'delete')  . $boat->getId() .'"> delete</a>
+                </li>
+            ';
         }
         $list = '<ul>' 
                 . $list . 

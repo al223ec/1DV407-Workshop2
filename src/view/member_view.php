@@ -26,7 +26,13 @@ class MemberView extends \core\View{
         $boats = $member->getBoats();
         if(!empty($boats)){
             foreach($boats as $boat){
-                $boatsHTML .= '<li>' . $boat. '</li>';
+                $boatsHTML .= '
+                    <li>
+                        ' . $boat. ' - 
+                        <a href="' . \Routes::getRoute('boat', 'edit') . $boat->getId() . '">edit</a> : 
+                        <a href="' . \Routes::getRoute('boat', 'delete') . $boat->getId() . '">delete</a>
+                    </li>
+                ';
             }
             
             $boatsHTML = '
