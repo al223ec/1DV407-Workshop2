@@ -3,7 +3,6 @@
 namespace model;
 
 class MemberModel {
-	
 	private $memberRepository; 
 
 	public function __construct(){
@@ -13,6 +12,7 @@ class MemberModel {
 	public function getArrayOfMembers(){
 		return $this->memberRepository->getArrayOfMembers(); 
 	}
+
 /*
 	public function getCompactArrayOfMembers(){
 
@@ -32,6 +32,7 @@ class MemberModel {
 		$member = new \model\Member($id); 
 		$member->setName($name); 
 		$member->setSsn($ssn); 
+		
 		if(!$member->isValid()){
 			return false; 
 		}

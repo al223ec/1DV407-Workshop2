@@ -32,7 +32,10 @@ class MemberListView extends \core\View{
             $list .= $this->getViewEditDeleteLinks("member", $member); 
             
             if($displayFullList){
+                $list .= '<li>';
                 $list .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
+                $list .= "<a href='" . \Routes::getRoute('boat', 'add')  . $member->getId() ."'>  Lägg till båt</a>"; 
+                $list .= '</li>'; 
             }else{
                 $list .= " Antal båtar: " . $member->getNumberOfBoats();  
             }

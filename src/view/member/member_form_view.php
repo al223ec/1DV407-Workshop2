@@ -30,7 +30,8 @@ class MemberFormView extends \core\View {
 
     public function getSsnPost(){
         $ssn = $this->getCleanInput($this->ssnPost); 
-        $ssn = preg_replace(\model\Member::$validChars, '', $ssn); 
+        $ssn = preg_replace(\model\Member::$validChars, '', $ssn);
+         
         if(strlen($ssn) < \model\Member::$ssnMinLength){
             $this->flashMessages->addFlash("För kort ssn!", \view\FlashMessages::FlashClassError); 
             return ""; 
@@ -52,18 +53,20 @@ class MemberFormView extends \core\View {
         $name = ""; 
         $ssn = ""; 
         $id = 0; 
+        $prompt = "Lägg till member"; 
 
         if($member !== null){
             $name = $member->getName(); 
             $ssn = $member->getSsn(); 
             $id = $member->getId(); 
+            $prompt = "Redigera member"; 
         }
 
         return $this->flashMessages->renderFlash() .
         '
             <form method="post" action="' . \Routes::getRoute('member', 'save') . '">
                 <fieldset>
-                    <legend>Add member</legend>
+                    <legend>'. $prompt . '</legend>
                         <label for="' . $this->namePost . '">Name:</label>
                             <input type="text" size="20" name="' . $this->namePost . '" id="' . $this->namePost . '" value="'. $name .'">
                         <label for="' . $this->ssnPost . '">SSN:</label>
@@ -74,6 +77,8 @@ class MemberFormView extends \core\View {
                 </fieldset>
 
                 <input type="submit" name="save" value="Spara">
+
+                <a href="' . \Routes::getRoute('member', 'main')  . '"> Avbryt</a>
             </form>
         ';
     }

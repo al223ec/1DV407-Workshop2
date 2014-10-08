@@ -8,14 +8,12 @@
 namespace view; 
 
 class MemberView extends \core\View{
-    
-    private $memberModel;
-    
     public function view($member){
         return '
             <h1> Medlem </h1>
             <h2>' . $member . '</h2>
-            <p> '. $member->getSsn() .'</p>'
+            <p> <a href="' . \Routes::getRoute('member', 'edit')  .  $member->getId() . '"> 
+                edit </a> |<a href="' . \Routes::getRoute('member', 'delete')  . $member->getId() .'"> delete </a> </p>'
              . $this->getBoatList($member) .
              '<a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
         '; 
