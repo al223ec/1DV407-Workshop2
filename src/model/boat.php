@@ -25,17 +25,22 @@ class Boat extends \core\BaseObject{
 	
 	private function setValidation(){
 		$this->validation = array(
+			'memberId' => array(
+				array('not_empty'),
+				array('is_int'),
+				array(array('min_value', 0)),
+			),
 			'type' => array(
-				'rule1' => array('rule' => 'not_empty', 'message' => 'Boat type cannot be empty!'),
-				'rule-characters' => array('rule' => 'alpha_num', 'message' => 'Only alpha-numerical chartacters allowed(a-z 0-9).'),
-				'rule-min-length' => array('rule' => array('min_length', 2)),
-				'rule-max-length' => array('rule' => array('max_length', 40))
+				array('not_empty', 'Not empty message.'),
+				array('alpha_num'),
+				array(array('min_length', 2), 'Måste vara minst 2 tecken.'),
+				array(array('max_length', 20)),
 			),
 			'length' => array(
-				'rule-is-int' => array('rule' => 'is_int', 'message' => 'Must be of type integer!'),
-				'rule-noit-empty' => array('rule' => 'not_empty', 'message' => 'Length cannot be empty'),
-				'rule-min' => array('rule' => array('min_value', 3)),
-				'rule-max' => array('rule' => array('max_value', 20))
+				array('is_int'),
+				array('not_empty', 'får inte vara tom'),
+				array(array('min_value', 3)),
+				array(array('max_value', 20), 'inte båtar längre än 20 meter plix.'),
 			)
 		);
 	}
@@ -59,12 +64,12 @@ class Boat extends \core\BaseObject{
 	}
 	
 	public function setMemberId($i){
-		$this->memberId = intval($i);
+		$this->memberId = $i;
 	}
 	public function setType($s){
-		$this->type = '' . $s;
+		$this->type = $s;
 	}
 	public function setLength($i){
-		$this->length = intval($i);
+		$this->length = $i;
 	}
 }

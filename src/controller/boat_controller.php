@@ -80,10 +80,9 @@ class BoatController extends \core\Controller {
 	public function view(){
 		$id = $this->params[0];
 		$boat = $this->boatModel->getBoatById($id);
-		$boat->setType(123);
-		var_dump($boat);
+		$boat->setLength('asd');
 		if($boat->valid()){
-			echo 'valid båt!';
+			var_dump('valid båt!');
 		}
 		else{
 			var_dump($boat->getErrors());
