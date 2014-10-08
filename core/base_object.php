@@ -55,6 +55,7 @@ class BaseObject{
 					$method = '_' . $rule[0];
 					$params = array($value);
 				}
+				
 				$result = call_user_func_array(array($this, $method), $params);
 				
 				if(!$result){

@@ -27,18 +27,16 @@ class BoatController extends \core\Controller {
 		$memberId = $this->boatView->getMemberId();
 		$type = $this->boatView->getType();
 		$length = $this->boatView->getLength();
-		try{
-			$this->boatModel->create($memberId, $type, $length);
+		$newBoat = new \model\Boat($memberId, $type, $length);
+		if($newBoat->valid()){
+			$this->boatModel->create($newBoat);
 			//$this->boatView->addMessage('Success! Boat added to member X');
 			$this->redirectTo('member', 'view', $memberId);
 		}
-		catch(\Exception $e){
-			var_dump($e);
-			exit;
-			//$this->boatView->addMessage($e->getMessage());
+		
+		foreach($newBoat->getErrors() as $error){
+			//$this->boatView->addMessage($error);
 		}
-		//return $this->add($memberId);
-		//return $this->boatview->add($memberId);
 		$this->redirectTo('boat', 'add', $memberId);
 	}
 
@@ -64,15 +62,14 @@ class BoatController extends \core\Controller {
 		$boat = $this->boatModel->getBoatById($id);
 		$boat->setType($this->boatView->getType());
 		$boat->setLength($this->boatView->getLength());
-		try{
+		
+		if($boat->valid()){
 			$this->boatModel->save($boat);
 			//$this->boatView->addMessage('Success! Boat added to member X');
 			$this->redirectTo('member', 'view', $boat->getMemberId());
 		}
-		catch(\Exception $e){
-			var_dump($e);
-			exit;
-			//$this->boatView->addMessage($e->getMessage());
+		foreach($boat->getErrors() as $error){
+			//$this->boatView->addMessage($error);
 		}
 		$this->redirectTo('boat', 'edit', $id);
 	}
@@ -80,7 +77,6 @@ class BoatController extends \core\Controller {
 	public function view(){
 		$id = $this->params[0];
 		$boat = $this->boatModel->getBoatById($id);
-		$boat->setLength('asd');
 		if($boat->valid()){
 			var_dump('valid båt!');
 		}

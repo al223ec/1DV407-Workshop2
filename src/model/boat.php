@@ -8,13 +8,7 @@ class Boat extends \core\BaseObject{
 	private $type; 
 	private $length;
 	
-	/** dafuq is dis? */
-	public $var; 
-
-	
-	public $attributes = array('id', 'member_id', 'type', 'length');
-	
-	public function __construct($id, $memberId, $type, $length){
+	public function __construct($memberId = null, $type = null, $length = null, $id = null){
 		$this->id = intval($id);
 		$this->memberId = intval($memberId);
 		$this->type = $type; 
@@ -25,22 +19,17 @@ class Boat extends \core\BaseObject{
 	
 	private function setValidation(){
 		$this->validation = array(
-			'memberId' => array(
-				array('not_empty'),
-				array('is_int'),
-				array(array('min_value', 0)),
-			),
 			'type' => array(
 				array('not_empty', 'Not empty message.'),
 				array('alpha_num'),
 				array(array('min_length', 2), 'Måste vara minst 2 tecken.'),
-				array(array('max_length', 20)),
+				array(array('max_length', 20))
 			),
 			'length' => array(
 				array('is_int'),
 				array('not_empty', 'får inte vara tom'),
 				array(array('min_value', 3)),
-				array(array('max_value', 20), 'inte båtar längre än 20 meter plix.'),
+				array(array('max_value', 20))
 			)
 		);
 	}
@@ -48,7 +37,6 @@ class Boat extends \core\BaseObject{
 	public function __toString(){
 		return $this->type; 
 	}
-	
 	
 	public function getId(){
 		return $this->id; 
