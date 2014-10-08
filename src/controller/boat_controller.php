@@ -76,4 +76,18 @@ class BoatController extends \core\Controller {
 		}
 		$this->redirectTo('boat', 'edit', $id);
 	}
+	
+	public function view(){
+		$id = $this->params[0];
+		$boat = $this->boatModel->getBoatById($id);
+		$boat->setType(123);
+		var_dump($boat);
+		if($boat->valid()){
+			echo 'valid båt!';
+		}
+		else{
+			var_dump($boat->getErrors());
+		}
+		exit;
+	}
 }

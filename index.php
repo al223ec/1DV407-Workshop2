@@ -19,6 +19,7 @@ require_once(ROOT_DIR . 'core' . DS . 'routes.php');
 require_once(ROOT_DIR . 'core' . DS . 'controller.php');
 require_once(ROOT_DIR . 'core' . DS . 'view.php'); 
 require_once(ROOT_DIR . 'core' . DS . 'repository.php'); 
+require_once(ROOT_DIR . 'core' . DS . 'base_object.php'); 
 
 $router = new \core\Router();  
 $view = new HTMLView();
