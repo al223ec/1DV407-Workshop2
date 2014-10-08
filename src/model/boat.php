@@ -32,7 +32,8 @@ class Boat extends \core\BaseObject{
 			'length' => array(
 				'rule-is-int' = array('rule' => 'is_int', 'message' => 'Must be of type integer!'),
 				'rule-noit-empty' = array('rule' => 'not_empty', 'message' => 'Length cannot be empty'),
-				'rule-min' = array('rule' => array('min_length' => 3))
+				'rule-min' = array('rule' => array('min_length' => 3)),
+				'rule-max' = array('rule' => array('mix_length' => 20))
 			)
 		);
 	}
