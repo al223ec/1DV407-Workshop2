@@ -13,11 +13,6 @@ class MemberModel {
 		return $this->memberRepository->getArrayOfMembers(); 
 	}
 
-/*
-	public function getCompactArrayOfMembers(){
-
-	}
-*/
 	public function getMemberById($id){
 		if($id === 0 || !is_int($id)){
 			return null; 
