@@ -56,7 +56,10 @@ class MemberRepository extends \core\Repository {
 
 	}
 
-	public function saveMember($name, $ssn){
+	public function saveMember(\model\Member $member){
+		$name = $member->getName();
+		$ssn = $member->getSsn();  
+
 		$sql = "INSERT INTO " . $this->table . "(name, ssn) VALUES( :name, :ssn);"; 
 		$params = array(":name" => $name, ":ssn" => $ssn); 
 
@@ -64,7 +67,11 @@ class MemberRepository extends \core\Repository {
 
 	}
 	
-	public function updateMember($id, $name, $ssn){
+	public function updateMember(\model\Member $member){
+		$id = $member->getId(); 
+		$name = $member->getName(); 
+		$sns = $member->getSsn(); 
+
  		$sql = "UPDATE " . $this->table . " SET name = :name, ssn = :ssn WHERE id = :id"; 
 		$params = array(":name" => $name, ":ssn" => $ssn, ":id" => $id); 
 
@@ -74,6 +81,8 @@ class MemberRepository extends \core\Repository {
 	* Skulle vara ganska praktiskt att få till detta
 	*/
 	protected function bindObject($object, $dboObject = null){
+		throw new \Exception("Inte implementerad alls", 1);
+		
 		$object = new $object("type", 1, 22, 2);
 
 		$objectVars = get_object_vars($object);

@@ -25,33 +25,19 @@ class MemberController extends \core\Controller {
 		return $this->formView->getAddEditForm(); 
 	}	
 
-	public function create(){
-		return 'create'; 
-	}
-	
-	public function update(){
-	}
-
-	public function delete(){
-		return 'delete'; 
-	}
-
 	public function edit(){
 		return $this->formView->getAddEditForm($this->memberModel->getMemberById(intval($this->params[0])));
 	}
 
 	public function save(){
 		//Kanske separera på create och update
-		$name = $this->formView->getName(); 
-		$ssn = $this->formView->getSsnPost();
-		$currentMemberId = $this->formView->getMemberId();
-		
-		$successfull = $this->memberModel->saveMember($name, $ssn, $currentMemberId);
-		
+		$member = $this->formView->getMember(); 
+		$successfull = $member !== null && $this->memberModel->saveMember($member);
+	
 		if($successfull){
 			$this->redirectTo('member');
 		}else{
-			return $this->formView->getAddEditForm($this->memberModel->getMemberById($currentMemberId));
+			return $this->formView->getAddEditForm($this->memberModel->getMemberById($this->formView->getMemberId()));
 		}
 	}
 

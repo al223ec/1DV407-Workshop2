@@ -2,37 +2,50 @@
 
 namespace model; 
 
-class Member implements \model\Ivalidatable {
+class Member extends \core\BaseObject {
 
-	public static $nameMinLength = 3; 
-	public static $ssnMinLength = 10; 
-	public static $ssnMaxLength = 12; 
-	public static $validChars = "/\D/";
+	private static $nameMinLength = 3; 
+	private static $ssnMinLength = 10; 
+	private static $ssnMaxLength = 12; 
+	private static $validChars = "/\D/";
 
 	private $id; 
 	private $ssn; 
 	private $name; 
 	private $boats; 
 
-	private $validSsn;
-	private $validName;  
-
 	public function __construct($id = 0){
-		$this->validSsn = false;
-		$this->validName = false;  
+		$this->errors = array(); 
 
 		$this->id = $id; 
+		$this->setValidation();
+	}
+	
+	private function setValidation(){
+		$this->validation = array(
+			'name' => array(
+				array('not_empty', 'Not empty message.'),
+				array(array('min_length', 2), 'Måste vara minst 2 tecken.'),
+				array(array('max_length', 20))
+			),
+			'ssn' => array(
+				array(array('regex', "/\D/")),
+				array('not_empty', 'får inte vara tom'),
+				array(array('min_length', self::$ssnMinLength), 'Måste vara minst 10 tecken.'),
+				array(array('max_length', self::$ssnMaxLength), 'Får inte vara längre än 12 tecekn')
+			)
+		);
+	}
+
+	private function setId($id){
+
 	}
 
 	public function setName($name){
-		$name = trim($name); 
-		$this->validName = strlen($name) > self::$nameMinLength; 
 		$this->name = $name; 
 	}
 
 	public function setSsn($ssn){
-		$ssn = preg_replace(self::$validChars, '', $ssn);
-		$this->validSsn = strlen($ssn) >= self::$ssnMinLength && strlen($ssn) <= self::$ssnMaxLength; 
 		$this->ssn = $ssn; 
 	}
 
@@ -59,16 +72,6 @@ class Member implements \model\Ivalidatable {
 	public function getNumberOfBoats(){
 		return sizeof($this->boats);
 	}
-
-	public function isValid(){
-		return $this->validSsn && $this->validName; 
-	}
-
-	public function validate(){
-		$this->setName($this->name); 
-		$this->setSsn($this->ssn);
-		return $this->isValid(); 
-	} 
 
 	public function __toString(){
 		return $this->name . ' ssn: '. $this->ssn; 

@@ -28,20 +28,16 @@ class MemberModel {
 	/**
 	* @return True om det lyckas
 	*/
-	public function saveMember($name, $ssn, $id = 0){
-		$member = new \model\Member($id); 
-		$member->setName($name); 
-		$member->setSsn($ssn); 
-		
-		if(!$member->isValid()){
+	public function saveMember(\model\Member $member){
+		if(!$member->valid()){
 			return false; 
 		}
-		//Skicka member objektet vidare?? 
-		if($id === 0){
-			return $this->memberRepository->saveMember($name, $ssn); 
+
+		if($member->getId() === 0){
+			return $this->memberRepository->saveMember($member); 
 		}else{
 			//Här kan man hämta den existerande medlemmen 
-			return $this->memberRepository->updateMember($id, $name, $ssn); 
+			return $this->memberRepository->updateMember($member); 
 		}
 	}
 }

@@ -18,37 +18,34 @@ class MemberFormView extends \core\View {
         $this->flashMessages = new \view\FlashMessages($this->flashKey);
     }
     
-    public function getName(){
-        $name = $this->getCleanInput($this->namePost);
+    public function getMember(){
+        $member = new \model\Member($this->getMemberId());
+        $member->setName($this->getName());
+        $member->setSsn($this->getSsn());
+        
+        if($member->valid()){
+            return $member; 
+        }
 
-        if(strlen($name) < \model\Member::$nameMinLength){
-            $this->flashMessages->addFlash("För kort namn!", \view\FlashMessages::FlashClassError); 
-            return ""; 
-        } 
-        return $name; 
+        foreach ($member->getErrors() as $error) {
+            $this->flashMessages->addFlash($error, \view\FlashMessages::FlashClassError);
+        }
+        return null;  
     }
 
-    public function getSsnPost(){
-        $ssn = $this->getCleanInput($this->ssnPost); 
-        $ssn = preg_replace(\model\Member::$validChars, '', $ssn);
-         
-        if(strlen($ssn) < \model\Member::$ssnMinLength){
-            $this->flashMessages->addFlash("För kort ssn!", \view\FlashMessages::FlashClassError); 
-            return ""; 
-        } else if (strlen($ssn) > \model\Member::$ssnMaxLength ) {
-            $this->flashMessages->addFlash("För lång ssn! Ange ssn i 881078-XXXX format", \view\FlashMessages::FlashClassError); 
-            return ""; 
-        } else if($ssn !== $this->getCleanInput($this->ssnPost)){
-            $this->flashMessages->addFlash("Ssn innehåller ogiltiga tecken endast siffror tillåtet!", \view\FlashMessages::FlashClassError); 
-            return ""; 
-        }
-        return $ssn; 
+    private function getName(){
+        return $this->getCleanInput($this->namePost);
+    }
+
+    private function getSsn(){
+        return $this->getCleanInput($this->ssnPost); 
     }
 
     public function getMemberId(){
         return intval($this->getCleanInput($this->memberIdPost)); 
     }
   
+
     public function getAddEditForm($member = null){
         $name = ""; 
         $ssn = ""; 
