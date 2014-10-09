@@ -18,6 +18,7 @@ class Validation {
 		//kontrollera om methoden redan är satt??
 		$this->fields[$field][] = new ValidationMethod($method, $arg, $message); 
 	}
+
 	public function validate($that){
 		foreach ($this->fields as $field => $validationMethods) {
 			if(!method_exists($that,'get' . $field)){ 
@@ -156,19 +157,6 @@ class Member extends \core\BaseObject {
 
 		$this->id = $id; 
 		$this->setValidation();
-
-		$val = new \model\Validation();
-		$val->setFieldToValidate('ssn', '_max_length', self::$ssnMaxLength, "Error message max length");
-		$val->setFieldToValidate('ssn', '_min_length', self::$ssnMinLength, "Error message min length");
-
-		var_dump($val->validate($this));
-		foreach ($val->getErrors() as $field => $errors) {
-			foreach ($errors as $error) {
-				echo "Fel på fältet $field " . $error;
-			}
-		}
-		die(); 
-
 	}
 	
 	private function setValidation(){

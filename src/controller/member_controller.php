@@ -25,6 +25,29 @@ class MemberController extends \core\Controller {
 		return $this->formView->getAddEditForm(); 
 	}	
 
+	public function delete(){
+		$member = $this->memberModel->getMemberById(intval($this->params[0]));
+		if($member !== null){
+			return $this->memberView->confirmDelete($member); 
+		}
+		return $this->main(); 
+	}
+
+	public function confirmDelete(){
+		$member = $this->memberModel->getMemberById(intval($this->params[0]));
+		if($member === null){
+			return $this->main(); 
+		}
+		//TODO: Vyn ska sköta detta!
+		if($this->memberModel->deleteMember(intval($this->params[0]))){
+			return "medlemmen " . $member->getName() . " togs bort!!"; 
+		}else{
+			//Något gick fel
+			return "Något oväntat gick fel!!"; 
+		}
+
+	}
+
 	public function edit(){
 		return $this->formView->getAddEditForm($this->memberModel->getMemberById(intval($this->params[0])));
 	}

@@ -19,6 +19,20 @@ class MemberView extends \core\View{
         '; 
     }
 
+    public function confirmDelete($member){
+        return '
+            <h1> Medlem </h1>
+            <h2>' . $member . '</h2>
+            <p> OBS! Detta kommer att ta bort medlemmen och medlemmens båtar!!!</p>
+            '
+             . $this->getBoatList($member) .
+             '<a href="' . \Routes::getRoute('member', 'main')  . '"> Avbryt</a> |
+
+              <a href="' . \Routes::getRoute('member', 'confirmDelete') . $member->getId() . '"> Bekfräfta borttagning</a>
+        '; 
+    }
+
+
     private function getBoatList($member){
         $boatsHTML = '';
         $boats = $member->getBoats();
@@ -41,4 +55,5 @@ class MemberView extends \core\View{
         }
         return $boatsHTML;
     }
+
 }

@@ -11,6 +11,7 @@ class Routes{
 			'add' => 'member/add/',
 			'setcompact' => 'member/setCompactList/',
 			'setfull' => 'member/setFullList/',
+			'confirmDelete' => 'member/confirmDelete/'
 		),
 		'boat' => array(
 			'add' => 'boat/add/',

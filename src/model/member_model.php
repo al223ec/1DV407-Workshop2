@@ -19,7 +19,9 @@ class MemberModel {
 		}
 		return $this->memberRepository->getMemberById($id); 
 	}
-
+	public function deleteMember($id){
+		return $this->memberRepository->deleteMember($id); 
+	}
 	/**
 	* @return True om det lyckas
 	*/
