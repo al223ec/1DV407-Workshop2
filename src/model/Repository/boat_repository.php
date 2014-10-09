@@ -19,17 +19,17 @@ class BoatRepository extends \core\Repository{
 	public function getBoatById($id){
 		$result = $this->findBy('id', $id);
 		if($result !== null){
-			return new \model\Boat($result[$this->columns[0]], $result[$this->columns[1]], $result[$this->columns[2]], $result[$this->columns[3]]);
+			return new \model\Boat($result[$this->columns[1]], $result[$this->columns[2]], $result[$this->columns[3]], $result[$this->columns[0]]);
 		}
 		return null;
 	}
 	
-	public function create($memberId, $type, $length){
+	public function create($boat){
 		$sql = "
 			INSERT INTO " . $this->table . "(" . $this->columns[1] . ", " . $this->columns[2] . ", " . $this->columns[3] . ")
 			VALUES (:memberId, :type, :length)
 		";
-		$params = array(':memberId' => $memberId, ':type' => $type, ':length' => $length);
+		$params = array(':memberId' => $boat->getmemberId(), ':type' => $boat->getType(), ':length' => $boat->getLength());
 		return $this->query($sql, $params, true);
 	}
 	
