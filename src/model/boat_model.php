@@ -20,11 +20,11 @@ class BoatModel{
 		return $this->memberModel->getMemberById($id);
 	}
 	
-	public function create($boat){
+	public function create(\model\Boat $boat){
 		return $this->boatRepository->create($boat);
 	}
 	
-	public function save($boat){
+	public function save(\model\Boat $boat){
 		return $this->boatRepository->save($boat);
 	}
 	

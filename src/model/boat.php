@@ -49,12 +49,12 @@ class Boat extends \core\BaseObject{
 	}
 	
 	public function setMemberId($i){
-		$this->memberId = $i;
+		$this->memberId = intval($i);
 	}
 	public function setType($s){
 		$this->type = $s;
 	}
 	public function setLength($i){
-		$this->length = $i;
+		$this->length = intval($i);
 	}
 }

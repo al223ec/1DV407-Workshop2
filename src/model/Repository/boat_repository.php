@@ -17,12 +17,13 @@ class BoatRepository extends \core\Repository{
 	}
 	
 	public function getBoatById($id){
-		$result = $this->findBy('id', $id);
+		$result = $this->findBy($this->columns[0], $id);
 		if($result !== null){
 			$boat = new \model\Boat($result[$this->columns[0]]);
 			$boat->setMemberId($result[$this->columns[1]]);
 			$boat->setType($result[$this->columns[2]]);
 			$boat->setLength($result[$this->columns[3]]);
+			return $boat;
 		}
 		return null;
 	}
