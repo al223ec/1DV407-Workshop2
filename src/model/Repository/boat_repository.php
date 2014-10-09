@@ -19,9 +19,33 @@ class BoatRepository extends \core\Repository{
 	public function getBoatById($id){
 		$result = $this->findBy('id', $id);
 		if($result !== null){
-			return new \model\Boat($result[$this->columns[1]], $result[$this->columns[2]], $result[$this->columns[3]], $result[$this->columns[0]]);
+			$boat = new \model\Boat($result[$this->columns[0]]);
+			$boat->setMemberId($result[$this->columns[1]]);
+			$boat->setType($result[$this->columns[2]]);
+			$boat->setLength($result[$this->columns[3]]);
 		}
 		return null;
+	}
+
+	private function getBoatsByMemberId($memberId){
+		$sql = "
+			SELECT " . $this->table . ".*
+			FROM " . $this->table . "
+			WHERE " . $this->table . "." . $this->columns[1] . " = :memberId
+		";
+		$params = array(":memberId" => $memberId); 
+
+		$boats = array();
+		if($response = $this->query($sql, $params)){
+			foreach ($response as $row) {
+				$boat = new \model\Boat($row[$this->columns[0]]);
+				$boat->setMemberId($row[$this->columns[1]]);
+				$boat->setType($row[$this->columns[2]]);
+				$boat->setLength($row[$this->columns[3]]);
+				$boats[] = $boat;
+			}
+		} 
+		return $boats;
 	}
 	
 	public function create($boat){
@@ -43,12 +67,12 @@ class BoatRepository extends \core\Repository{
 		return $this->query($sql, $params, true);
 	}
 	
-	public function delete($id){
+	public function delete($boat){
 		$sql = "
 			DELETE FROM " . $this->table . "
 			WHERE " . $this->table . ".id = :id
 		";
-		$params = array(':id' => $id);
+		$params = array(':id' => $boat->getId());
 		return $this->query($sql, $params, true);
 	}
 }

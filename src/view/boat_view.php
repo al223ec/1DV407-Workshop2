@@ -5,6 +5,8 @@ namespace view;
 class BoatView extends \core\View{
 	
 	private $boatModel;
+	private $flashMessages;
+	private $flashKey = 'BoatView::flashKey';
 	
 	private $postVarId = 'BoatView::id';
 	private $postVarMemberId = 'BoatView::memberId';
@@ -12,19 +14,36 @@ class BoatView extends \core\View{
 	private $postVarLength = 'BoatView::length';
 	
 	public function __construct($boatModel){
+		$this->flashMessages = new \view\FlashMessages($this->flashKey);
 		$this->boatModel = $boatModel;
 	}
 	
-	public function getId(){
+	public function getBoatFromPost(){
+		$boat = new \model\Boat($this->getId());
+		$boat->setMemberId($this->getMemberId());
+		$boat->setType($this->getType());
+		$boat->setLength($this->setLength());
+		if($boat->valid()){
+			return boat;
+		}
+		else{
+			foreach($boat->getErrors() as $error){
+				$this->flashMessages->addFlash($error, \view\FlashMessages::FlashClassError); 
+			}
+			return null;
+		}
+	}
+
+	private function getId(){
 		return intval($this->getCleanInput($this->postVarId));
 	}
-	public function getMemberId(){
+	private function getMemberId(){
 		return intval($this->getCleanInput($this->postVarMemberId));
 	}
-	public function getType(){
+	private function getType(){
 		return $this->getCleanInput($this->postVarType);
 	}
-	public function getLength(){
+	private function getLength(){
 		return intval($this->getCleanInput($this->postVarLength));
 	}
 	
@@ -32,6 +51,7 @@ class BoatView extends \core\View{
 		return '
 			<h1>Lägg till båt</h1>
 			<form method="post" action="' . \Routes::getRoute('boat', 'create') . '">
+				<input type="hidden" id="' . $this->postVarId . '" name="' . $this->postVarId . '" value="0" />
 				<input type="hidden" id="' . $this->postVarMemberId . '" name="' . $this->postVarMemberId . '" value="' . $memberId . '" />
 				<div>
 					<label for="' . $this->postVarType . '">Båt-typ<label>
@@ -60,6 +80,7 @@ class BoatView extends \core\View{
 			<div>
 				<form method="post" action="' . \Routes::getRoute('boat', 'save') . '">
 					<input type="hidden" id="' . $this->postVarId . '" name="' . $this->postVarId . '" value="' . $id . '" />
+					<input type="hidden" id="' . $this->postVarMemberId . '" name="' . $this->postVarMemberId . '" value="' . $member->getId() . '" />
 					<div>
 						<label for="' . $this->postVarType . '">Båt-typ<label>
 						<input type="text" id="' . $this->postVarType . '" name="' . $this->postVarType . '" value="' . $boat->getType() . '" />

@@ -8,11 +8,8 @@ class Boat extends \core\BaseObject{
 	private $type; 
 	private $length;
 	
-	public function __construct($memberId = null, $type = null, $length = null, $id = null){
+	public function __construct($id = 0){
 		$this->id = intval($id);
-		$this->memberId = intval($memberId);
-		$this->type = $type; 
-		$this->length = intval($length); 
 		
 		$this->setValidation();
 	}
@@ -35,7 +32,7 @@ class Boat extends \core\BaseObject{
 	}
 
 	public function __toString(){
-		return $this->type; 
+		return ''.$this->type;
 	}
 	
 	public function getId(){
