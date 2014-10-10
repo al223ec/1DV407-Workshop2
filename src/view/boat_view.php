@@ -13,7 +13,7 @@ class BoatView extends \core\View{
 	private $postVarType = 'BoatView::type';
 	private $postVarLength = 'BoatView::length';
 	
-	public function __construct($boatModel){
+	public function __construct(\model\BoatModel $boatModel){
 		$this->flashMessages = new \view\FlashMessages($this->flashKey);
 		$this->boatModel = $boatModel;
 	}
@@ -22,34 +22,33 @@ class BoatView extends \core\View{
 		$boat = new \model\Boat($this->getId());
 		$boat->setMemberId($this->getMemberId());
 		$boat->setType($this->getType());
-		$boat->setLength($this->setLength());
-		if($boat->valid()){
-			return boat;
-		}
-		else{
+		$boat->setLength($this->getLength());
+		if(!$boat->valid()){
 			foreach($boat->getErrors() as $error){
 				$this->flashMessages->addFlash($error, \view\FlashMessages::FlashClassError); 
 			}
 			return null;
 		}
+		return $boat;
 	}
 
-	private function getId(){
+	public function getId(){
 		return intval($this->getCleanInput($this->postVarId));
 	}
-	private function getMemberId(){
+	public function getMemberId(){
 		return intval($this->getCleanInput($this->postVarMemberId));
 	}
-	private function getType(){
+	public function getType(){
 		return $this->getCleanInput($this->postVarType);
 	}
-	private function getLength(){
+	public function getLength(){
 		return intval($this->getCleanInput($this->postVarLength));
 	}
 	
 	public function add($memberId){
 		return '
 			<h1>Lägg till båt</h1>
+			' . $this->flashMessages->renderFlash() . '
 			<form method="post" action="' . \Routes::getRoute('boat', 'create') . '">
 				<input type="hidden" id="' . $this->postVarId . '" name="' . $this->postVarId . '" value="0" />
 				<input type="hidden" id="' . $this->postVarMemberId . '" name="' . $this->postVarMemberId . '" value="' . $memberId . '" />
@@ -76,6 +75,7 @@ class BoatView extends \core\View{
 			<div>
 				<h2>Redigera Båt</h2>
 				<p>Ägare: ' . $member . '</p>
+				' . $this->flashMessages->renderFlash() . '
 			</div>
 			<div>
 				<form method="post" action="' . \Routes::getRoute('boat', 'save') . '">

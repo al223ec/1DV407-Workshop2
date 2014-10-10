@@ -23,10 +23,10 @@ class BoatController extends \core\Controller {
 
 	public function create(){
 		$boat = $this->boatView->getBoatFromPost();
-		if($this->boatModel->create($boat)){
-			$this->redirectTo('member', 'view', $memberId);
+		if($boat !== null && $this->boatModel->create($boat)){
+			$this->redirectTo('member', 'view', $boat->getMemberId());
 		}
-		$this->redirectTo('boat', 'add', $memberId);
+		$this->redirectTo('boat', 'add', $this->boatView->getMemberId());
 	}
 
 	public function delete(){
@@ -45,9 +45,9 @@ class BoatController extends \core\Controller {
 
 	public function save(){
 		$boat = $this->boatView->getBoatFromPost();
-		if($this->boatModel->save($boat)){
+		if($boat !== null && $this->boatModel->save($boat)){
 			$this->redirectTo('member', 'view', $boat->getMemberId());
 		}
-		$this->redirectTo('boat', 'edit', $id);
+		$this->redirectTo('boat', 'edit', $this->boatView->getId());
 	}
 }
