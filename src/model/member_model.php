@@ -13,18 +13,15 @@ class MemberModel {
 		return $this->memberRepository->getArrayOfMembers(); 
 	}
 
-/*
-	public function getCompactArrayOfMembers(){
-
-	}
-*/
 	public function getMemberById($id){
 		if($id === 0 || !is_int($id)){
 			return null; 
 		}
 		return $this->memberRepository->getMemberById($id); 
 	}
-
+	public function deleteMember($id){
+		return $this->memberRepository->deleteMember($id); 
+	}
 	/**
 	* @return True om det lyckas
 	*/

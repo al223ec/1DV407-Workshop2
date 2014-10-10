@@ -25,7 +25,7 @@ class MemberRepository extends \core\Repository {
 	}
 
 	private function getBoatsByMemberId($memberId){
-		$ret = array(); 
+		$boats = array(); 
 
 		$sql = "SELECT * FROM boat WHERE member_id = :memberId";   
 		//Exempel på query användning med en array
@@ -33,10 +33,15 @@ class MemberRepository extends \core\Repository {
 
 		if($response = $this->query($sql, $params)){
 			foreach ($response as $boat) {
-				$ret[] = new \model\Boat($boat["id"], $boat["member_id"], $boat["type"], $boat["length"]); 
+				$newBoat = new \model\Boat($boat["id"]);
+				$newBoat->setMemberId($boat["member_id"]);
+				$newBoat->setType($boat["type"]);
+				$newBoat->setLength($boat["length"]);
+
+				$boats[] = $newBoat;
 			}
 		} 
-		return $ret; 
+		return $boats; 
 	}
 
 	public function getMemberById($id){
@@ -52,8 +57,11 @@ class MemberRepository extends \core\Repository {
 		return null;
 	}
 
-	public function deleteMemeber($id){
-
+	public function deleteMember($id){
+		$sql = "DELETE FROM " . $this->table . " WHERE id = :id"; 
+		$params = array(":id" => $id); 
+		
+		return $this->query($sql, $params, true);
 	}
 
 	public function saveMember(\model\Member $member){
