@@ -76,4 +76,13 @@ class BoatRepository extends \core\Repository{
 		$params = array(':id' => $boat->getId());
 		return $this->query($sql, $params, true);
 	}
+
+	public function deleteBoatsByMemberId($memberId){
+		$sql = "
+			DELETE FROM " . $this->table . "
+			WHERE " . $this->table . ".member_id = :memberId
+		";
+		$params = array(':memberId' => $memberId);
+		return $this->query($sql, $params, true);
+	}
 }

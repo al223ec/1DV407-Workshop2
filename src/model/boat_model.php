@@ -33,4 +33,7 @@ class BoatModel{
 	public function delete($id){
 		return $this->boatRepository->delete($id);
 	}
+	public function deleteBoatsByMemberId($memberId){
+		return $this->boatRepository->deleteBoatsByMemberId($memberId);
+	}
 }

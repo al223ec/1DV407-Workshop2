@@ -50,7 +50,9 @@ class MemberController extends \core\Controller {
 		}
 		//TODO: Vyn ska sköta detta!
 		if($this->memberModel->deleteMember(intval($this->params[0]))){
-			return $this->memberView->memberDeletedSuccessfully($member); 
+			if($this->boatModel->deleteBoatsByMemberId(intval($this->params[0]))){
+				return $this->memberView->memberDeletedSuccessfully($member); 
+			}
 		}else{
 			//Något gick fel detta sker endast om det blir något fel när medlemmen tas bort på db sidan mao väldigt osannolikt
 			return $this->memberView->unknownError();  
