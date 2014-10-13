@@ -93,6 +93,7 @@ class BoatView extends \core\View{
 						<input type="submit" value="Save boat" />
 					</div>
 				</form>
+				<a href="'. \Routes::getRoute('member', 'view') . $member->getId() .'"> Tillbaka</a>
 			</div>
 		';
 	}

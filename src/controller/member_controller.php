@@ -5,20 +5,30 @@ namespace controller;
 class MemberController extends \core\Controller {
 
 	private $memberModel; 
+	private $boatModel; 
 	private $memberView; 
+
 	private $formView; 
 	private $listView; 
 
 	public function __construct(){
 		$this->memberModel = new \model\MemberModel(); 
+		$this->boatModel = new \model\BoatModel();
+
 		$this->memberView = new \view\MemberView($this->memberModel); 
 		$this->formView = new \view\member\MemberFormView($this->memberModel); 
 		$this->listView = new \view\member\MemberListView($this->memberModel); 
 	}
 
 	public function main(){
+		$members = $this->memberModel->getArrayOfMembers(); 
+		
+		foreach ($members as $member){
+			$member->setBoats($this->boatModel->getBoatsByMemberId($member->getId())); 
+		}
+		
 		$listView = new \view\member\MemberListView($this->memberModel); 
-		return $this->listView->getMemeberList($this->listView->shouldDispalyFullList());
+		return $this->listView->getMemeberList($members);
 	}
 
 	public function add(){
@@ -40,10 +50,10 @@ class MemberController extends \core\Controller {
 		}
 		//TODO: Vyn ska sköta detta!
 		if($this->memberModel->deleteMember(intval($this->params[0]))){
-			return "medlemmen " . $member->getName() . " togs bort!!"; 
+			return $this->memberView->memberDeletedSuccessfully($member); 
 		}else{
-			//Något gick fel
-			return "Något oväntat gick fel!!"; 
+			//Något gick fel detta sker endast om det blir något fel när medlemmen tas bort på db sidan mao väldigt osannolikt
+			return $this->memberView->unknownError();  
 		}
 
 	}
@@ -56,7 +66,7 @@ class MemberController extends \core\Controller {
 		//Kanske separera på create och update
 		$member = $this->formView->getMember(); 
 		$successfull = $member !== null && $this->memberModel->saveMember($member);
-	
+
 		if($successfull){
 			$this->redirectTo('member');
 		}else{
@@ -67,6 +77,7 @@ class MemberController extends \core\Controller {
 	public function view(){
 		$member = $this->memberModel->getMemberById(intval($this->params[0])); 
 		if($member !== null){
+			$member->setBoats($this->boatModel->getBoatsByMemberId($member->getId())); 
 			return $this->memberView->view($member);
 		}
 		$this->redirectTo('member');

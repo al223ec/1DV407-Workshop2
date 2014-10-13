@@ -8,12 +8,13 @@
 namespace view; 
 
 class MemberView extends \core\View{
+
     public function view($member){
         return '
             <h1> Medlem </h1>
             <h2>' . $member . '</h2>
             <p> <a href="' . \Routes::getRoute('member', 'edit')  .  $member->getId() . '"> 
-                edit </a> |<a href="' . \Routes::getRoute('member', 'delete')  . $member->getId() .'"> delete </a> </p>'
+                Redigera </a> |<a href="' . \Routes::getRoute('member', 'delete')  . $member->getId() .'"> Ta bort </a> </p>'
              . $this->getBoatList($member) .
              '<a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
         '; 
@@ -32,6 +33,22 @@ class MemberView extends \core\View{
         '; 
     }
 
+    public function memberDeletedSuccessfully($member){
+        return '
+            <h1> Medlem </h1>
+            <h2>' . $member . '</h2>
+            <p> Medlem ' . $member->getName() . ' togs bort ur systemet</p>
+            <a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
+        '; 
+    }
+
+    public function unknownError($message = "Något oväntat gick fel vg försök igen"){
+        return '<h1> ERROR!</h1>
+                <p>'. $message .'</p>
+                <a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
+        '; 
+    }
+
 
     private function getBoatList($member){
         $boatsHTML = '';
@@ -41,8 +58,8 @@ class MemberView extends \core\View{
                 $boatsHTML .= '
                     <li>
                         ' . $boat. ' - 
-                        <a href="' . \Routes::getRoute('boat', 'edit') . $boat->getId() . '">edit</a> : 
-                        <a href="' . \Routes::getRoute('boat', 'delete') . $boat->getId() . '">delete</a>
+                        <a href="' . \Routes::getRoute('boat', 'edit') . $boat->getId() . '">Redigera</a> : 
+                        <a href="' . \Routes::getRoute('boat', 'delete') . $boat->getId() . '">Ta bort</a>
                     </li>
                 ';
             }

@@ -8,6 +8,7 @@ class BoatController extends \core\Controller {
 	private $boatView;
 	
 	public function __construct(){
+		
 		$this->boatModel = new \model\BoatModel();
 		$this->boatView = new \view\BoatView($this->boatModel);
 	}

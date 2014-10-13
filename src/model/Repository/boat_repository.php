@@ -28,7 +28,7 @@ class BoatRepository extends \core\Repository{
 		return null;
 	}
 
-	private function getBoatsByMemberId($memberId){
+	public function getBoatsByMemberId($memberId){
 		$sql = "
 			SELECT " . $this->table . ".*
 			FROM " . $this->table . "

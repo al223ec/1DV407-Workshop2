@@ -5,11 +5,9 @@ namespace model;
 class BoatModel{
 	
 	private $boatRepository;
-	private $memberModel;
 	
 	public function __construct(){
 		$this->boatRepository = new \model\repository\BoatRepository();
-		$this->memberModel = new \model\memberModel();
 	}
 	
 	public function getBoatById($id){
@@ -17,9 +15,13 @@ class BoatModel{
 	}
 	
 	public function getOwner($id){
-		return $this->memberModel->getMemberById($id);
+		$memberModel = new \model\memberModel();
+		return $memberModel->getMemberById($id);
 	}
 	
+	public function getBoatsByMemberId($id){
+		return $this->boatRepository->getBoatsByMemberId($id);
+	}
 	public function create(\model\Boat $boat){
 		return $this->boatRepository->create($boat);
 	}

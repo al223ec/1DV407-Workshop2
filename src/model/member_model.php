@@ -6,18 +6,18 @@ class MemberModel {
 	private $memberRepository; 
 
 	public function __construct(){
-		$this->memberRepository = new repository\MemberRepository(); 
+		$this->memberRepository = new \model\repository\MemberRepository();
 	}
 
 	public function getArrayOfMembers(){
-		return $this->memberRepository->getArrayOfMembers(); 
+		 return $this->memberRepository->getArrayOfMembers();
 	}
 
 	public function getMemberById($id){
 		if($id === 0 || !is_int($id)){
 			return null; 
 		}
-		return $this->memberRepository->getMemberById($id); 
+		return $this->memberRepository->getMemberById($id); ;
 	}
 	public function deleteMember($id){
 		return $this->memberRepository->deleteMember($id); 

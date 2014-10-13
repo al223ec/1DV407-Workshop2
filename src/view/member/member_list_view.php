@@ -23,10 +23,10 @@ class MemberListView extends \core\View{
         setcookie ($this->fullListCookieKey, "", time() - 400000, '/');
     }
 
-    public function getMemeberList($displayFullList){
+    public function getMemeberList($members){
+        $displayFullList = $this->shouldDispalyFullList();
         $list = "";
-        $members = $this->memberModel->getArrayOfMembers(); 
-
+    
         foreach ($members as $member) {
             $list .= '<li>' . $member;
             $list .= $this->getViewEditDeleteLinks("member", $member); 
@@ -55,8 +55,8 @@ class MemberListView extends \core\View{
             $list .= '
                 <li>
                     '. $boat . ' - 
-                    <a href="' . \Routes::getRoute('boat', 'edit')  . $boat->getId() .'"> Edit</a>  | 
-                    <a href="' . \Routes::getRoute('boat', 'delete')  . $boat->getId() .'"> delete</a>
+                    <a href="' . \Routes::getRoute('boat', 'edit')  . $boat->getId() .'"> Redigera </a>  | 
+                    <a href="' . \Routes::getRoute('boat', 'delete')  . $boat->getId() .'"> Ta bort</a>
                 </li>
             ';
         }
@@ -68,15 +68,15 @@ class MemberListView extends \core\View{
 
     private function getViewEditDeleteLinks($controller, $obj){
         return "<a href='" . \Routes::getRoute($controller, 'view')  . $obj->getId() ."'> Visa</a> | 
-                <a href='" . \Routes::getRoute($controller, 'edit')  . $obj->getId() ."'> Edit</a>  | 
-                <a href='" . \Routes::getRoute($controller, 'delete')  . $obj->getId() ."'> delete</a>";
+                <a href='" . \Routes::getRoute($controller, 'edit')  . $obj->getId() ."'> Redigera</a>  | 
+                <a href='" . \Routes::getRoute($controller, 'delete')  . $obj->getId() ."'> Ta bort</a>";
     }
     
     private function listFooter(){
         return "<a href='" . \Routes::getRoute('member', 'add') . "'> Lägg till</a>";
     }
     private function listHeader(){
-        return "<a href='" . \Routes::getRoute('member', 'setcompact'). "'> Compact lista </a> |
-            <a href='" . \Routes::getRoute('member', 'setfull') . "'> Full lista </a>";  
+        return "<a href='" . \Routes::getRoute('member', 'setcompact'). "'> Kompakt  lista </a> |
+            <a href='" . \Routes::getRoute('member', 'setfull') . "'> Fullständig  lista </a>";  
     }
 }
