@@ -33,11 +33,19 @@ class BoatController extends \core\Controller {
 	public function delete(){
 		$id = $this->params[0];
 		$boat = $this->boatModel->getBoatById($id);
+		if($boat !== null){
+			return $this->boatView->delete($boat);
+		}
+		$this->redirectTo('member');
+	}
+
+	public function confirmDelete(){
+		$id = $this->params[0];
+		$boat = $this->boatModel->getBoatById($id);
 		if($boat !== null && $this->boatModel->delete($boat)){
 			$this->redirectTo('member', 'view', $boat->getMemberId());
 		}
 		$this->redirectTo('member');
-
 	}
 
 	public function edit(){

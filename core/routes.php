@@ -18,7 +18,8 @@ class Routes{
 			'create' => 'boat/create/',
 			'edit' => 'boat/edit/',
 			'save' => 'boat/save/',
-			'delete' => 'boat/delete/'
+			'delete' => 'boat/delete/',
+			'confirmDelete' => 'boat/confirmDelete/'
 		)
 	);
 	

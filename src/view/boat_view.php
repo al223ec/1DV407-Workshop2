@@ -97,4 +97,15 @@ class BoatView extends \core\View{
 			</div>
 		';
 	}
+
+	public function delete($boat){
+		$member = $this->boatModel->getOwner($boat->getMemberId());
+		return '
+			<h2>Ta bort båt</h2>
+			<p>Är du säker på att du vill ta bort båt: ' . $boat . '</p>
+			<p>Ägare: ' . $member . '</p>
+			<a href="' . \Routes::getRoute('member', 'view') . $member->getId() . '"> Avbryt</a> |
+			<a href="' . \Routes::getRoute('boat', 'confirmDelete') . $boat->getId() . '"> Bekfräfta borttagning</a>
+		';
+	}
 } 
