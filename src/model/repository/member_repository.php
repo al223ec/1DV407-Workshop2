@@ -31,6 +31,7 @@ class MemberRepository extends \core\Repository {
 			$member->setName($result['name']); 
 			$member->setSsn($result['ssn']); 
 			
+			
 			return $member; 
 		}
 		return null;
