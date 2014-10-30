@@ -21,7 +21,8 @@ class MemberController extends \core\Controller {
 	}
 
 	public function main(){
-		$members = $this->memberModel->getArrayOfMembers(); 
+		$memberFilter = $this->listView->getMemberFilter();
+		$members = $this->memberModel->getMembers($memberFilter);
 		
 		foreach ($members as $member){
 			$member->setBoats($this->boatModel->getBoatsByMemberId($member->getId())); 

@@ -5,7 +5,8 @@ namespace view\member;
 class MemberListView extends \core\View{
     
     private $memberModel;
-    private $fullListCookieKey = "MemberView::fullListCookieKey"; 
+    private $fullListCookieKey = "MemberView::fullListCookieKey";
+    private $memberFilter = 'MemberView::MemberFilter';
 
     public function __construct($memberModel) {
         $this->memberModel = $memberModel; 
@@ -23,10 +24,14 @@ class MemberListView extends \core\View{
         setcookie ($this->fullListCookieKey, "", time() - 400000, '/');
     }
 
+    public function getMemberFilter(){
+        return isset($_POST[$this->memberFilter]) ? intval($_POST[$this->memberFilter]) : 0;
+    }
+
     public function getMemeberList($members){
         $displayFullList = $this->shouldDispalyFullList();
         $list = "";
-    
+        
         foreach ($members as $member) {
             $list .= '<li>' . $member;
             $list .= $this->getViewEditDeleteLinks("member", $member); 
@@ -43,9 +48,12 @@ class MemberListView extends \core\View{
             $list .= '</li>';  
         }
 
-        $list = '<ul id="members">' 
+        $list = '
+            ' . $this->getMemberFilterDropDown() . '
+            <ul id="members">' 
                 . $list . 
-                '</ul>';
+                '</ul>
+        ';
         return $this->listHeader() . $list . $this->listFooter();
     }
 
@@ -78,5 +86,21 @@ class MemberListView extends \core\View{
     private function listHeader(){
         return "<a href='" . \Routes::getRoute('member', 'setcompact'). "'> Kompakt  lista </a> |
             <a href='" . \Routes::getRoute('member', 'setfull') . "'> Fullständig  lista </a>";  
+    }
+
+    private function getMemberFilterDropDown(){
+        return '
+            <div>
+                <form method="post" action="' . \Routes::getRoute('member', 'main') . '">
+                    <label for="' . $this->memberFilter . '">Filtrera medlemmar</label>
+                    <select name="' . $this->memberFilter . '" id="' . $this->memberFilter . '"> 
+                        <option value="0">Alla</option>
+                        <option value="1">Med båtar</option>
+                        <option value="2">Utan båtar</option>
+                    </select>
+                    <input type="submit" />
+                </form>
+            </div>
+        ';
     }
 }

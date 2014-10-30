@@ -3,10 +3,26 @@
 namespace model;
 
 class MemberModel {
-	private $memberRepository; 
+	private $memberRepository;
+	private $memberFilters;
 
 	public function __construct(){
 		$this->memberRepository = new \model\repository\MemberRepository();
+		$this->setMemberFilters();
+	}
+
+	private function setMemberFilters(){
+		$this->memberFilters[] = new \model\repository\MembersAll();
+		$this->memberFilters[] = new \model\repository\MembersWithBoats();
+		$this->memberFilters[] = new \model\repository\MembersWithoutBoats();
+	}
+
+	public function getMemberFilters(){
+		return $this->memberFilters;
+	}
+
+	public function getMembers($filterKey){
+		return $this->memberFilters[$filterKey]->getFilterdMembers();
 	}
 
 	public function getArrayOfMembers(){
