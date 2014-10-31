@@ -4,6 +4,8 @@ namespace controller;
 
 class MemberController extends \core\Controller {
 
+	private $isLoggedIn;
+
 	private $memberModel; 
 	private $boatModel; 
 	private $memberView; 
@@ -12,12 +14,15 @@ class MemberController extends \core\Controller {
 	private $listView; 
 
 	public function __construct(){
+		$authController = new \controller\AuthController();
+		$this->isLoggedIn = $authController->checkAuth();
+
 		$this->memberModel = new \model\MemberModel(); 
 		$this->boatModel = new \model\BoatModel();
 
-		$this->memberView = new \view\MemberView($this->memberModel); 
-		$this->formView = new \view\member\MemberFormView($this->memberModel); 
-		$this->listView = new \view\member\MemberListView($this->memberModel); 
+		$this->memberView = new \view\MemberView($this->isLoggedIn); 
+		$this->formView = new \view\member\MemberFormView($this->memberModel);
+		$this->listView = new \view\member\MemberListView($this->memberModel, $this->isLoggedIn); 
 	}
 
 	public function main(){
@@ -28,15 +33,16 @@ class MemberController extends \core\Controller {
 			$member->setBoats($this->boatModel->getBoatsByMemberId($member->getId())); 
 		}
 		
-		$listView = new \view\member\MemberListView($this->memberModel); 
 		return $this->listView->getMemeberList($members);
 	}
 
 	public function add(){
+		$this->beforeAction();
 		return $this->formView->getAddEditForm(); 
 	}	
 
 	public function delete(){
+		$this->beforeAction();
 		$member = $this->memberModel->getMemberById(intval($this->params[0]));
 		if($member !== null){
 			return $this->memberView->confirmDelete($member); 
@@ -45,6 +51,7 @@ class MemberController extends \core\Controller {
 	}
 
 	public function confirmDelete(){
+		$this->beforeAction();
 		$member = $this->memberModel->getMemberById(intval($this->params[0]));
 		if($member === null){
 			return $this->main(); 
@@ -62,10 +69,12 @@ class MemberController extends \core\Controller {
 	}
 
 	public function edit(){
+		$this->beforeAction();
 		return $this->formView->getAddEditForm($this->memberModel->getMemberById(intval($this->params[0])));
 	}
 
 	public function save(){
+		$this->beforeAction();
 		//Kanske separera på create och update
 		$member = $this->formView->getMember(); 
 		$successfull = $member !== null && $this->memberModel->saveMember($member);
@@ -94,5 +103,11 @@ class MemberController extends \core\Controller {
 	public function setFullList(){
 		$this->listView->setDisplayFullList();
 		$this->redirectTo('member');
+	}
+
+	private function beforeAction(){
+		if(!$this->isLoggedIn){
+			$this->redirectTo('member', 'main');
+		}
 	}
 }

@@ -20,6 +20,11 @@ class Routes{
 			'save' => 'boat/save/',
 			'delete' => 'boat/delete/',
 			'confirmDelete' => 'boat/confirmDelete/'
+		),
+		'auth' => array(
+			'login' => 'auth/login/',
+			'signout' => 'auth/signout/',
+			'auth' => 'auth/auth/'
 		)
 	);
 	

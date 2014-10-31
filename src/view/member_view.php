@@ -8,15 +8,26 @@
 namespace view; 
 
 class MemberView extends \core\View{
+    private $isLoggedIn;
+
+    public function __construct($isLoggedIn){
+        $this->isLoggedIn = $isLoggedIn;
+    } 
 
     public function view($member){
+        $memberOptions = '';
+        if($this->isLoggedIn){
+            $memberOptions = '
+                <a href="' . \Routes::getRoute('member', 'edit')  .  $member->getId() . '"> Redigera </a> |
+                <a href="' . \Routes::getRoute('member', 'delete')  . $member->getId() .'"> Ta bort </a>
+            ';
+        }
         return '
             <h1> Medlem </h1>
             <h2>' . $member . '</h2>
-            <p> <a href="' . \Routes::getRoute('member', 'edit')  .  $member->getId() . '"> 
-                Redigera </a> |<a href="' . \Routes::getRoute('member', 'delete')  . $member->getId() .'"> Ta bort </a> </p>'
-             . $this->getBoatList($member) .
-             '<a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
+            <p> '. $memberOptions . '</p>'
+            . $this->getBoatList($member) .
+            '<a href="' . \Routes::getRoute('member', 'main')  . '"> Tillbaka</a>
         '; 
     }
 
@@ -55,11 +66,16 @@ class MemberView extends \core\View{
         $boats = $member->getBoats();
         if(!empty($boats)){
             foreach($boats as $boat){
-                $boatsHTML .= '
-                    <li>
-                        ' . $boat. ' - 
+                $boatOptions = '';
+                if($this->isLoggedIn){
+                    $boatOptions = ' - 
                         <a href="' . \Routes::getRoute('boat', 'edit') . $boat->getId() . '">Redigera</a> : 
                         <a href="' . \Routes::getRoute('boat', 'delete') . $boat->getId() . '">Ta bort</a>
+                    ';
+                }
+                $boatsHTML .= '
+                    <li>
+                        ' . $boat . $boatOptions . '
                     </li>
                 ';
             }

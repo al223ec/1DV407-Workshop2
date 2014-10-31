@@ -8,8 +8,11 @@ class MemberListView extends \core\View{
     private $fullListCookieKey = "MemberView::fullListCookieKey";
     private $memberFilter = 'MemberView::MemberFilter';
 
-    public function __construct($memberModel) {
+    private $isLoggedIn;
+
+    public function __construct($memberModel, $isLoggedIn) {
         $this->memberModel = $memberModel; 
+        $this->isLoggedIn = $isLoggedIn;
     }
 
     public function shouldDispalyFullList(){
@@ -39,7 +42,9 @@ class MemberListView extends \core\View{
             if($displayFullList){
                 $list .= '<li>';
                 $list .= $member->getNumberOfBoats() > 0 ? $this->getBoatList($member->getBoats()) : " - Medlemmen saknar båt";
-                $list .= "<a href='" . \Routes::getRoute('boat', 'add')  . $member->getId() ."'>  Lägg till båt</a>"; 
+                if($this->isLoggedIn){
+                    $list .= "<a href='" . \Routes::getRoute('boat', 'add')  . $member->getId() ."'>  Lägg till båt</a>"; 
+                }
                 $list .= '</li>'; 
             }else{
                 $list .= " Antal båtar: " . $member->getNumberOfBoats();  
@@ -52,7 +57,7 @@ class MemberListView extends \core\View{
             ' . $this->getMemberFilterDropDown() . '
             <ul id="members">' 
                 . $list . 
-                '</ul>
+            '</ul>
         ';
         return $this->listHeader() . $list . $this->listFooter();
     }
@@ -60,11 +65,16 @@ class MemberListView extends \core\View{
     private function getBoatList($boats){
         $list = '';
         foreach ($boats as $boat) {
-            $list .= '
-                <li>
-                    '. $boat . ' - 
+            $boatOption = '';
+            if($this->isLoggedIn){
+                $boatOption = '
                     <a href="' . \Routes::getRoute('boat', 'edit')  . $boat->getId() .'"> Redigera </a>  | 
                     <a href="' . \Routes::getRoute('boat', 'delete')  . $boat->getId() .'"> Ta bort</a>
+                ';
+            }
+            $list .= '
+                <li>
+                    '. $boat . ' - ' . $boatOption . '
                 </li>
             ';
         }
@@ -75,17 +85,27 @@ class MemberListView extends \core\View{
     }
 
     private function getViewEditDeleteLinks($controller, $obj){
-        return "<a href='" . \Routes::getRoute($controller, 'view')  . $obj->getId() ."'> Visa</a> | 
-                <a href='" . \Routes::getRoute($controller, 'edit')  . $obj->getId() ."'> Redigera</a>  | 
-                <a href='" . \Routes::getRoute($controller, 'delete')  . $obj->getId() ."'> Ta bort</a>";
+        if($this->isLoggedIn){
+            return "<a href='" . \Routes::getRoute($controller, 'view')  . $obj->getId() ."'> Visa</a> | 
+                    <a href='" . \Routes::getRoute($controller, 'edit')  . $obj->getId() ."'> Redigera</a>  | 
+                    <a href='" . \Routes::getRoute($controller, 'delete')  . $obj->getId() ."'> Ta bort</a>";
+        }
+        return '<a href="' . \Routes::getRoute($controller, 'view')  . $obj->getId() .'"> Visa</a>';
     }
     
     private function listFooter(){
-        return "<a href='" . \Routes::getRoute('member', 'add') . "'> Lägg till</a>";
+        if($this->isLoggedIn){
+            return "<a href='" . \Routes::getRoute('member', 'add') . "'> Lägg till</a>";
+        }
+        return '';
     }
     private function listHeader(){
-        return "<a href='" . \Routes::getRoute('member', 'setcompact'). "'> Kompakt  lista </a> |
-            <a href='" . \Routes::getRoute('member', 'setfull') . "'> Fullständig  lista </a>";  
+        $login = ($this->isLoggedIn) ? '<a href="' . \Routes::getRoute('auth', 'signout') . '">Logga ut</a>' : '<a href="' . \Routes::getRoute('auth', 'login') . '">Logga in</a>';
+        return '
+            <a href="' . \Routes::getRoute('member', 'setcompact'). '"> Kompakt  lista </a> |
+            <a href="' . \Routes::getRoute('member', 'setfull') . '"> Fullständig  lista </a> | 
+            ' . $login . '
+        ';
     }
 
     private function getMemberFilterDropDown(){
