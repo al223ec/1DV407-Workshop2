@@ -5,22 +5,20 @@ class MembersWithoutBoats extends \core\Repository implements IMemberFilterRepos
 
 	public function getFilterdMembers(){
 		$sql = "
-			SELECT member.*, boat.id as boat_id
-			FROM member
-			LEFT JOIN boat
-			ON member.id = boat.member_id
-			GROUP BY member.id
+		   SELECT member.*
+		   FROM member
+		   LEFT JOIN boat
+		   ON member.id = boat.member_id
+		   WHERE boat.member_id IS NULL
 		";  
 		$ret = array(); 
 
 		if($response = $this->query($sql)){
 			foreach ($response as $memberdbo) {
-				if($memberdbo['boat_id'] == null){
-					$member = new \model\Member($memberdbo['id']); 
-					$member->setName($memberdbo['name']); 
-					$member->setSsn($memberdbo['ssn']); 
-					$ret[] = $member; 
-				}
+				$member = new \model\Member($memberdbo['id']); 
+				$member->setName($memberdbo['name']); 
+				$member->setSsn($memberdbo['ssn']); 
+				$ret[] = $member;
 			}
 		} 
 		return $ret; 
