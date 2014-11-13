@@ -4,14 +4,12 @@ namespace view\member;
 
 class MemberListView extends \core\View{
     
-    private $memberModel;
     private $fullListCookieKey = "MemberView::fullListCookieKey";
     private $memberFilter = 'MemberView::MemberFilter';
 
     private $isLoggedIn;
 
-    public function __construct($memberModel, $isLoggedIn) {
-        $this->memberModel = $memberModel; 
+    public function __construct($isLoggedIn) {
         $this->isLoggedIn = $isLoggedIn;
     }
 

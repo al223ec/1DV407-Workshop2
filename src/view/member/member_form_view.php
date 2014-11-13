@@ -11,10 +11,7 @@ class MemberFormView extends \core\View {
 
     private $flashKey = "MemberFormView::FlashKey"; 
 
-    private $memberModel;
-
-    public function __construct($memberModel) {
-        $this->memberModel = $memberModel;
+    public function __construct() {
         $this->flashMessages = new \view\FlashMessages($this->flashKey);
     }
     

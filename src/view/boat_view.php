@@ -20,9 +20,11 @@ class BoatView extends \core\View{
 	
 	public function getBoatFromPost(){
 		$boat = new \model\Boat($this->getId());
+		
 		$boat->setMemberId($this->getMemberId());
 		$boat->setType($this->getType());
 		$boat->setLength($this->getLength());
+
 		if(!$boat->valid()){
 			foreach($boat->getErrors() as $error){
 				$this->flashMessages->addFlash($error, \view\FlashMessages::FlashClassError); 
@@ -63,8 +65,7 @@ class BoatView extends \core\View{
 				<div>
 					<input type="submit" value="Add boat" />
 				</div>
-			</form>
-		';
+			</form>';
 	}
 	
 	public function edit($id){

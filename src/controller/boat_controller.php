@@ -30,6 +30,7 @@ class BoatController extends \core\Controller {
 	public function create(){
 		$this->beforeAction();
 		$boat = $this->boatView->getBoatFromPost();
+		
 		if($boat !== null && $this->boatModel->create($boat)){
 			$this->redirectTo('member', 'view', $boat->getMemberId());
 		}

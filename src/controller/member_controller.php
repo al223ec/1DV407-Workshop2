@@ -21,8 +21,8 @@ class MemberController extends \core\Controller {
 		$this->boatModel = new \model\BoatModel();
 
 		$this->memberView = new \view\MemberView($this->isLoggedIn); 
-		$this->formView = new \view\member\MemberFormView($this->memberModel);
-		$this->listView = new \view\member\MemberListView($this->memberModel, $this->isLoggedIn); 
+		$this->formView = new \view\member\MemberFormView();
+		$this->listView = new \view\member\MemberListView($this->isLoggedIn); 
 	}
 
 	public function main(){
